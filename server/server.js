@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 // ROUTES
+app.use('/douvies/users', require('./routes/douvies/users'));
 app.use('/douvies/movies', require('./routes/douvies/movies'));
 app.use('/douvies/series', require('./routes/douvies/series'));
 app.use('/douvies/profile', require('./routes/douvies/profile'));
