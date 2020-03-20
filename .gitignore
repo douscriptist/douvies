@@ -5,71 +5,71 @@ node_modules/
 #client/
 ########################################################################################################################
 # dependencies
-/.pnp
-client/.pnp.js
+client/*/.pnp
+client/*/.pnp.js
 
 # testing
-client/coverage
+client/*/coverage
 
 # production
-client/build
+client/*/build
 
 # misc
-client/.DS_Store
-client/.env.local
-client/.env.development.local
-client/.env.test.local
-client/.env.production.local
+client/*/.DS_Store
+client/*/.env.local
+client/*/.env.development.local
+client/*/.env.test.local
+client/*/.env.production.local
 
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
+client/*/npm-debug.log*
+client/*/yarn-debug.log*
+client/*/yarn-error.log*
 
 ########################################################################################################################
 #mobile/
 ########################################################################################################################
 # OSX
 #
-mobile/.DS_Store
+mobile/*/.DS_Store
 
 # Xcode
 #
-mobile/build/
-mobile/*.pbxuser
-mobile/!default.pbxuser
-mobile/*.mode1v3
-mobile/!default.mode1v3
-mobile/*.mode2v3
-mobile/!default.mode2v3
-mobile/*.perspectivev3
-mobile/!default.perspectivev3
-mobile/xcuserdata
-mobile/*.xccheckout
-mobile/*.moved-aside
-mobile/DerivedData
-mobile/*.hmap
-mobile/*.ipa
-mobile/*.xcuserstate
+mobile/*/build/
+mobile/*/*.pbxuser
+mobile/*/!default.pbxuser
+mobile/*/*.mode1v3
+mobile/*/!default.mode1v3
+mobile/*/*.mode2v3
+mobile/*/!default.mode2v3
+mobile/*/*.perspectivev3
+mobile/*/!default.perspectivev3
+mobile/*/xcuserdata
+mobile/*/*.xccheckout
+mobile/*/*.moved-aside
+mobile/*/DerivedData
+mobile/*/*.hmap
+mobile/*/*.ipa
+mobile/*/*.xcuserstate
 
 # Android/IntelliJ
 #
-mobile/build/
-mobile/.idea
-mobile/.gradle
-mobile/local.properties
-mobile/*.iml
+mobile/*/*/build/
+mobile/*/.idea
+mobile/*/.gradle
+mobile/*/local.properties
+mobile/*/*.iml
 
 # node.js
 #
-mobile/node_modules/
-mobile/npm-debug.log
-mobile/yarn-error.log
+mobile/*/node_modules/
+mobile/*/npm-debug.log
+mobile/*/yarn-error.log
 
 # BUCK
-mobile/buck-out/
-mobile/\.buckd/
-mobile/*.keystore
-mobile/!debug.keystore
+mobile/*/buck-out/
+mobile/*/\.buckd/
+mobile/*/*.keystore
+mobile/*/!debug.keystore
 
 # fastlane
 #
@@ -83,10 +83,10 @@ mobile/*/fastlane/Preview.html
 mobile/*/fastlane/screenshots
 
 # Bundle artifact
-mobile/*.jsbundle
+mobile/*/*.jsbundle
 
 # CocoaPods
-mobile//ios/Pods/
+mobile/*/ios/Pods/
 
 ########################################################################################################################
 #server/
