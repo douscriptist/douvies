@@ -9,13 +9,11 @@ const UserSettingSchema = new mongoose.Schema({
 	hideProfile: { type: Boolean, default: false },
 	favourites: [
 		{
-			id: {
+			movie: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'movie'
-			},
-			apiId: { type: String, required: true, ref: 'movie' },
-			title: { type: String, required: true, ref: 'movie' }
+			}
 		}
 	],
 	date: { type: Date, default: Date.now }
