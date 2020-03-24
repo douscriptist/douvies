@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 require('dotenv').config();
 
 const User = require('../../models/User');
+const UserSetting = require('../../models/UserSetting');
 
 // @route   POST douvies/users
 // @desc    Register User
@@ -69,7 +70,13 @@ router.post(
 			const salt = await bcrypt.genSalt(10);
 			user.password = await bcrypt.hash(password, salt);
 
-			await user.save();
+			// Create User default Settings
+			const newUserSetting = new UserSetting({
+				user: user._id
+			}).populate('user', ['email', 'username']);
+
+			return res.json({ user, newUserSetting });
+			// await user.save();
 
 			// Return jwt @because after register user need to logged in
 			const payload = {
