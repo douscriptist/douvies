@@ -7,16 +7,19 @@ const UserSettingSchema = new mongoose.Schema({
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },
-	favourites: [
-		{
-			movie: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'movie'
-			}
-		}
-	],
+	// favourites: [
+	// 	{
+	// 		movie: {
+	// 			type: mongoose.Schema.Types.ObjectId,
+	// 			required: true,
+	// 			ref: 'movie'
+	// 		}
+	// 	}
+	// ],i
 	date: { type: Date, default: Date.now }
 });
 
-module.exports = Profile = mongoose.model('user-setting', UserSettingSchema);
+module.exports = UserSetting = mongoose.model(
+	'user-setting',
+	UserSettingSchema
+);
