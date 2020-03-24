@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
 	email: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
 	avatar: { type: String },
-	createdAt: { type: Date, default: Date.now }
+	createdAt: { type: Date, default: Date.now },
+	settings: { type: mongoose.Schema.Types.ObjectId, ref: 'user-setting' }
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

@@ -9,6 +9,7 @@ connectDB();
 
 // INIT MIDDLEWARES
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // TEST ROUTE
 app.get('/', (req, res) => {

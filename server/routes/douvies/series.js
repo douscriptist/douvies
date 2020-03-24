@@ -118,4 +118,31 @@ router.get(
 	}
 );
 
+// @route   DELETE douvies/series/:sid
+// @desc    Delete a serie
+// @access  Private
+router.delete('/:sid', auth, async (req, res) => {
+	try {
+		const serie = await Serie.findById(req.params.sid);
+		// Check if serie exists?
+		if (!serie) {
+			return res.status(404).json({ msg: 'Serie is not available!' });
+		}
+
+		// Check if ther right User requests?
+		if (serie.user.toString() !== req.user.id) {
+			return res.status(401).json({ msg: 'User not authorized!' });
+		}
+
+		await serie.remove();
+		res.json({ msg: 'Serie removed succesfully!' });
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Serie is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
 module.exports = router;

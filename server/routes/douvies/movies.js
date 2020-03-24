@@ -104,4 +104,31 @@ router.get(
 	}
 );
 
+// @route   DELETE douvies/movies/:mid
+// @desc    Delete a movie
+// @access  Private
+router.delete('/:mid', auth, async (req, res) => {
+	try {
+		const movie = await Movie.findById(req.params.mid);
+		// Check if movie exists?
+		if (!movie) {
+			return res.status(404).json({ msg: 'Movie is not available!' });
+		}
+
+		// Check if ther right User requests?
+		if (movie.user.toString() !== req.user.id) {
+			return res.status(401).json({ msg: 'User not authorized!' });
+		}
+
+		await movie.remove();
+		res.json({ msg: 'Movie removed succesfully!' });
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Movie is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
 module.exports = router;
