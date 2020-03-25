@@ -72,10 +72,11 @@ router.post(
 
 			// Create User default Settings
 			const newUserSetting = new UserSetting({
-				user: user._id
+				user: user.id
 			});
-			await newUserSetting.save();
+
 			await user.save();
+			await newUserSetting.save();
 
 			// Return jwt @because after register user need to logged in
 			const payload = {

@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSettingSchema = new mongoose.Schema({
-	user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-	email: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-	username: { type: mongoose.Schema.Types.ObjectId, ref: 'user', unique: true },
+	user: { type: mongoose.Schema.Types.ObjectId },
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },
