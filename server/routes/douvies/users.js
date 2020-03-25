@@ -73,10 +73,9 @@ router.post(
 			// Create User default Settings
 			const newUserSetting = new UserSetting({
 				user: user._id
-			}).populate('user', ['email', 'username']);
-
-			return res.json({ user, newUserSetting });
-			// await user.save();
+			});
+			await newUserSetting.save();
+			await user.save();
 
 			// Return jwt @because after register user need to logged in
 			const payload = {

@@ -21,7 +21,6 @@ app.use('/douvies/users', require('./routes/douvies/users'));
 app.use('/douvies/movies', require('./routes/douvies/movies'));
 app.use('/douvies/series', require('./routes/douvies/series'));
 app.use('/douvies/profile', require('./routes/douvies/profile'));
-app.use('/douvies/search-list', require('./routes/douvies/search-list'));
 app.use('/douvies/auth', require('./routes/douvies/auth'));
 
 // LISTEN
