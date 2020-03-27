@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSettingSchema = new mongoose.Schema({
-	user: { type: mongoose.Schema.Types.ObjectId },
+	user: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },

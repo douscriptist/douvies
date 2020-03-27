@@ -11,17 +11,15 @@ router.get('/', async (req, res) => {
 	res.status(404).json({ page: 'Profile & Settings' });
 });
 
-// @route   GET douvies/profile/:uid
+// @route   GET douvies/profile/:pid
 // @desc    Get a user profile and settings
 // @access  Private
-router.get('/:uid', auth, async (req, res) => {
+router.get('/:pid', auth, async (req, res) => {
 	try {
-		const settings = await UserSetting.findById(req.params.uid).populate(
+		const settings = await UserSetting.findById(req.params.pid).populate(
 			'user',
 			['username', 'email']
 		);
-
-		console.log(settings);
 
 		// Check if settings/profile exists?
 		if (!settings) {
