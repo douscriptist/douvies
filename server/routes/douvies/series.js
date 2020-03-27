@@ -82,12 +82,14 @@ router.post(
 	}
 );
 
+// FIX: Here will be upcoming public
+// FIX: For now, cuz of safety, returns user's series by private
 // @route   GET douvies/series
 // @desc    Maybe Upcoming?
 // @access  Public?
 router.get('/', auth, async (req, res) => {
 	try {
-		const series = await Serie.find();
+		const series = await Serie.find({ user: req.user.id });
 		if (!series.length)
 			return res.status(404).json({ msg: 'Series not found' });
 		res.json(series);
@@ -96,6 +98,18 @@ router.get('/', auth, async (req, res) => {
 		res.status(500).send('Server Erro');
 	}
 });
+// LATER: This will be moved to profile api section
+// router.get('/', auth, async (req, res) => {
+// 	try {
+// 		const series = await Serie.find({ user: req.user.id });
+// 		if (!series.length)
+// 			return res.status(404).json({ msg: 'Series not found' });
+// 		res.json(series);
+// 	} catch (err) {
+// 		console.error(err.message);
+// 		res.status(500).send('Server Erro');
+// 	}
+// });
 
 // @route   GET douvies/series/:sid
 // @desc    Get a serie
