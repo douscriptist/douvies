@@ -5,18 +5,8 @@ const UserSettingSchema = new mongoose.Schema({
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },
-	favourites: [
-		{
-			movie: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'movie'
-			},
-			serie: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'serie'
-			}
-		}
-	],
+	movies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'movie' }],
+	series: [{ type: mongoose.Schema.Types.ObjectId, ref: 'serie' }],
 	date: { type: Date, default: Date.now }
 });
 

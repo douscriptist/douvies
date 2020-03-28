@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../../utils/auth');
 
 const UserSetting = require('../../models/UserSetting');
+const Serie = require('../../models/Serie');
 
 // @route   GET douvies/profile
 // @desc    Get all Users
@@ -18,7 +19,7 @@ router.get('/:pid', auth, async (req, res) => {
 	try {
 		const settings = await UserSetting.findById(req.params.pid).populate(
 			'user',
-			['username', 'email']
+			['name', 'email', 'username', 'createdAt']
 		);
 
 		// Check if settings/profile exists?
@@ -27,7 +28,10 @@ router.get('/:pid', auth, async (req, res) => {
 		}
 
 		// Check if ther right User requests?
-		if (settings.user.id.toString() !== req.user.id) {
+		if (
+			settings.user.id.toString() !== req.user.id &&
+			settings.user.toString() !== req.user.id
+		) {
 			return res.status(401).json({ msg: 'User not authorized!' });
 		}
 
