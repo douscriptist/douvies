@@ -15,8 +15,8 @@ const UserSetting = require('../../models/UserSetting');
 router.post(
 	'/',
 	[
-		check('name', 'Name is required!').notEmpty(),
-		check('lastName', 'lastName is required!').notEmpty(),
+		check('name.first', 'firstName is required!').notEmpty(),
+		check('name.last', 'lastName is required!').notEmpty(),
 		check('username', 'username is required!').notEmpty(),
 		check('username', 'username length between 6-12').isLength({
 			min: 6,
@@ -33,7 +33,7 @@ router.post(
 		if (!errors.isEmpty()) {
 			return res.status(400).json({ errors: errors.array() });
 		}
-		const { name, lastName, username, email, password } = req.body;
+		const { name, username, email, password } = req.body;
 
 		try {
 			// See if user or username exists?
@@ -60,7 +60,6 @@ router.post(
 			user = new User({
 				name,
 				email,
-				lastName,
 				username,
 				// avatar,
 				password

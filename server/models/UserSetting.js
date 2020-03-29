@@ -7,7 +7,8 @@ const UserSettingSchema = new mongoose.Schema({
 	hideProfile: { type: Boolean, default: false },
 	movies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'movie' }],
 	series: [{ type: mongoose.Schema.Types.ObjectId, ref: 'serie' }],
-	date: { type: Date, default: Date.now }
+	createdAt: { type: Date, default: Date.now },
+	updatedAt: { type: Date }
 });
 
 module.exports = UserSetting = mongoose.model(
