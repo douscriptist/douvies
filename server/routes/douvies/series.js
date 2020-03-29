@@ -114,23 +114,45 @@ router.get('/', auth, async (req, res) => {
 // @route   GET douvies/series/:sid
 // @desc    Get a serie
 // @access  Private
-router.get(
-	'/:sid',
-	/*auth,*/ async (req, res) => {
-		try {
-			const serie = await Serie.findById(req.params.sid);
-			if (!serie)
-				return res.status(404).json({ msg: 'Serie is not available!' });
-			res.json(serie);
-		} catch (err) {
-			console.error(err.message);
-			if (err.kind === 'ObjectId') {
-				return res.status(404).json({ msg: 'Serie is not available!' });
-			}
-			res.status(500).send('Server Error');
+router.get('/:sid', auth, async (req, res) => {
+	try {
+		const serie = await Serie.findById(req.params.sid);
+		if (!serie) return res.status(404).json({ msg: 'Serie is not available!' });
+		res.json(serie);
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Serie is not available!' });
 		}
+		res.status(500).send('Server Error');
 	}
-);
+});
+
+// @route   PUT douvies/series/:sid
+// @desc    Update a serie
+// @access  Private
+router.put('/:sid', auth, async (req, res) => {
+	const updatedSerie = { ...req.body, updatedAt: Date.now() };
+	console.log(updatedSerie);
+	try {
+		const isSerie = await Serie.findById(req.params.sid);
+		if (!isAuth(isSerie, req, res)) {
+			// const serie = await Serie.findOneAndUpdate(
+			// 	{ _id: req.params.sid },
+			// 	updatedSerie,
+			// 	{ new: true }
+			// );
+			await isSerie.updateOne(updatedSerie);
+			res.status(200).json({ success: true, msg: 'Updated successfully...' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Movie is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
 
 // @route   DELETE douvies/series/:sid
 // @desc    Delete a serie
@@ -158,5 +180,16 @@ router.delete('/:sid', auth, async (req, res) => {
 		res.status(500).send('Server Error');
 	}
 });
+
+function isAuth(param, req, res) {
+	// Check if movie exists?
+	if (!param) {
+		return res.status(404).json({ msg: 'Serie is not available!' });
+	}
+	// Check if ther right User requests?
+	if (param.user.toString() !== req.user.id) {
+		return res.status(401).json({ msg: 'User not authorized!' });
+	}
+}
 
 module.exports = router;
