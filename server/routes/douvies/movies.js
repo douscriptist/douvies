@@ -86,42 +86,12 @@ router.get('/', async (req, res) => {
 // @route   GET douvies/movies/:mid
 // @desc    Get a movie
 // @access  Private
-router.get(
-	'/:mid',
-	/*auth,*/ async (req, res) => {
-		try {
-			const movie = await Movie.findById(req.params.mid);
-			if (!movie)
-				return res.status(404).json({ msg: 'Movie is not available!' });
-			res.json(movie);
-		} catch (err) {
-			console.error(err.message);
-			if (err.kind === 'ObjectId') {
-				return res.status(404).json({ msg: 'Movie is not available!' });
-			}
-			res.status(500).send('Server Error');
-		}
-	}
-);
-
-// @route   DELETE douvies/movies/:mid
-// @desc    Delete a movie
-// @access  Private
-router.delete('/:mid', auth, async (req, res) => {
+router.get('/:mid', auth, async (req, res) => {
 	try {
 		const movie = await Movie.findById(req.params.mid);
-		// Check if movie exists?
-		if (!movie) {
-			return res.status(404).json({ msg: 'Movie is not available!' });
+		if (!isAuth(movie, req, res)) {
+			res.json(movie);
 		}
-
-		// Check if ther right User requests?
-		if (movie.user.toString() !== req.user.id) {
-			return res.status(401).json({ msg: 'User not authorized!' });
-		}
-
-		await movie.remove();
-		res.json({ msg: 'Movie removed succesfully!' });
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
@@ -130,5 +100,60 @@ router.delete('/:mid', auth, async (req, res) => {
 		res.status(500).send('Server Error');
 	}
 });
+
+// @route   PUT douvies/movies/:mid
+// @desc    Update a movie
+// @access  Private
+router.put('/:mid', auth, async (req, res) => {
+	const updatedMovie = { ...req.body, updatedAt: Date.now() };
+	try {
+		const isMovie = await Movie.findById(req.params.mid);
+		if (!isAuth(isMovie, req, res)) {
+			// const movie = await Movie.findOneAndUpdate(
+			// 	{ _id: req.params.mid },
+			// 	updatedMovie,
+			// 	{ new: true }
+			// );
+			await isMovie.updateOne(updatedMovie);
+			res.status(200).json({ success: true, msg: 'Updated successfully...' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Movie is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
+// @route   DELETE douvies/movies/:mid
+// @desc    Delete a movie
+// @access  Private
+router.delete('/:mid', auth, async (req, res) => {
+	try {
+		const movie = await Movie.findById(req.params.mid);
+		if (!isAuth(movie, req, res)) {
+			await movie.remove();
+			res.json({ msg: 'Movie removed succesfully!' });
+		}
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Movie is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
+function isAuth(param, req, res) {
+	// Check if movie exists?
+	if (!param) {
+		return res.status(404).json({ msg: 'Movie is not available!' });
+	}
+	// Check if ther right User requests?
+	if (param.user.toString() !== req.user.id) {
+		return res.status(401).json({ msg: 'User not authorized!' });
+	}
+}
 
 module.exports = router;
