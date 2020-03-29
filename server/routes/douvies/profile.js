@@ -91,7 +91,7 @@ router.get('/user/:pid', auth, async (req, res) => {
 			['name', 'email', 'username', 'createdAt']
 		);
 
-		checkParams(settings, req, res);
+		isAuthUser(settings, req, res);
 		res.json(settings);
 	} catch (err) {
 		console.error(err.message);
@@ -106,16 +106,20 @@ router.get('/user/:pid', auth, async (req, res) => {
 // @desc    Update user profile by profile id
 // @access  Private
 router.put('/user/:pid', auth, async (req, res) => {
-	// const settings = await UserSetting.findById(req.params.pid);
-	const newSetting = { updatedAt: Date.now(), ...req.body };
+	const { darkMode, hideFavourites, hideProfile } = req.body;
+
 	try {
-		// FIX: Authenticate user?
-		const updated = await UserSetting.findOneAndUpdate(
-			{ _id: req.params.pid },
-			newSetting,
-			{ new: true }
-		);
-		res.json(updated);
+		const updated = await UserSetting.findById(req.params.pid);
+		if (!isAuthUser(updated, req, res)) {
+			// LATER: refactor
+			// Update area
+			updated.darkMode = darkMode;
+			updated.hideFavourites = hideFavourites;
+			updated.hideProfile = hideProfile;
+			updated.updatedAt = Date.now();
+			await updated.save();
+			res.json(updated);
+		}
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
@@ -125,7 +129,7 @@ router.put('/user/:pid', auth, async (req, res) => {
 	}
 });
 
-function checkParams(param, req, res) {
+function isAuthUser(param, req, res) {
 	// Check if settings/profile exists?
 	if (!param) {
 		return res.status(404).json({ msg: 'Settings is not available!' });
