@@ -91,19 +91,7 @@ router.get('/user/:pid', auth, async (req, res) => {
 			['name', 'email', 'username', 'createdAt']
 		);
 
-		// Check if settings/profile exists?
-		if (!settings) {
-			return res.status(404).json({ msg: 'Settings is not available!' });
-		}
-
-		// Check if ther right User requests?
-		if (
-			settings.user.id.toString() !== req.user.id &&
-			settings.user.toString() !== req.user.id
-		) {
-			return res.status(401).json({ msg: 'User not authorized!' });
-		}
-
+		checkParams(settings, req, res);
 		res.json(settings);
 	} catch (err) {
 		console.error(err.message);
@@ -113,5 +101,43 @@ router.get('/user/:pid', auth, async (req, res) => {
 		res.status(500).send('Server Error');
 	}
 });
+
+// @route   PUT douvies/profile/user/:pid
+// @desc    Update user profile by profile id
+// @access  Private
+router.put('/user/:pid', auth, async (req, res) => {
+	// const settings = await UserSetting.findById(req.params.pid);
+	const newSetting = { updatedAt: Date.now(), ...req.body };
+	try {
+		// FIX: Authenticate user?
+		const updated = await UserSetting.findOneAndUpdate(
+			{ _id: req.params.pid },
+			newSetting,
+			{ new: true }
+		);
+		res.json(updated);
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res.status(404).json({ msg: 'Settings is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
+function checkParams(param, req, res) {
+	// Check if settings/profile exists?
+	if (!param) {
+		return res.status(404).json({ msg: 'Settings is not available!' });
+	}
+
+	// Check if ther right User requests?
+	if (
+		param.user.id.toString() !== req.user.id &&
+		param.user.toString() !== req.user.id
+	) {
+		return res.status(401).json({ msg: 'User not authorized!' });
+	}
+}
 
 module.exports = router;
