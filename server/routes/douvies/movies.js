@@ -6,6 +6,22 @@ const auth = require('../../utils/auth');
 const Movie = require('../../models/Movie');
 const User = require('../../models/User');
 
+// @route   GET douvies/movies/favourites
+// @desc    Get favourite movies
+// @access  Private
+router.get('/favourites', auth, async (req, res) => {
+	res.json({ success: true, msg: 'Favourite Series' });
+	// try {
+	// 	const movies = await Serie.find({ user: req.user.id });
+	// 	if (!movies.length)
+	// 		return res.status(404).json({ msg: 'Series not found' });
+	// 	res.json(movies);
+	// } catch (err) {
+	// 	console.error(err.message);
+	// 	res.status(500).send('Server Erro');
+	// }
+});
+
 // @route   POST douvies/movies
 // @desc    Post a movie
 // @access  Private
