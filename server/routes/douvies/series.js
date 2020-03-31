@@ -6,6 +6,22 @@ const auth = require('../../utils/auth');
 const Serie = require('../../models/Serie');
 const User = require('../../models/User');
 
+// @route   GET douvies/series/favourites
+// @desc    Get favourite series
+// @access  Private
+router.get('/favourites', auth, async (req, res) => {
+	res.json({ success: true, msg: 'Favourite Series' });
+	// try {
+	// 	const series = await Serie.find({ user: req.user.id });
+	// 	if (!series.length)
+	// 		return res.status(404).json({ msg: 'Series not found' });
+	// 	res.json(series);
+	// } catch (err) {
+	// 	console.error(err.message);
+	// 	res.status(500).send('Server Erro');
+	// }
+});
+
 // @route   POST douvies/series
 // @desc    Post a serie
 // @access  Private
