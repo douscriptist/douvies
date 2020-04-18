@@ -11,7 +11,7 @@ const User = require('../../models/User');
 // @desc    Get all Users
 // @access  Public?
 router.get('/', async (req, res) => {
-	res.status(404).json({ page: 'Profile & Settings' });
+	res.status(200).json({ success: true, page: 'Profile & Settings' });
 });
 
 // @route   GET douvies/profile/:uid
@@ -24,24 +24,24 @@ router.get('/:uid', auth, async (req, res) => {
 			[
 				{
 					$match: {
-						_id: mongoose.Types.ObjectId(req.params.uid)
-					}
+						_id: mongoose.Types.ObjectId(req.params.uid),
+					},
 				},
 				{
 					$lookup: {
 						from: 'user-settings',
 						localField: '_id',
 						foreignField: 'user',
-						as: 'settings'
-					}
+						as: 'settings',
+					},
 				},
 				{
 					// $unwind: '$settings'
 					$unwind: {
 						path: '$settings',
 						// includeArrayIndex: 'arrayIndex',
-						preserveNullAndEmptyArrays: false
-					}
+						preserveNullAndEmptyArrays: false,
+					},
 				},
 				{
 					$project: {
@@ -50,9 +50,9 @@ router.get('/:uid', auth, async (req, res) => {
 						'settings.series': false,
 						'settings.user': false,
 						'settings.date': false,
-						'settings.__v': false
-					}
-				}
+						'settings.__v': false,
+					},
+				},
 			],
 			(err, data) => {
 				if (!err) {
@@ -63,19 +63,25 @@ router.get('/:uid', auth, async (req, res) => {
 
 		// Check if settings/profile exists?
 		if (!user) {
-			return res.status(404).json({ msg: 'User is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'User is not available!' });
 		}
 
 		// Check if ther right User requests?
 		if (user._id.toString() !== req.user.id) {
-			return res.status(401).json({ msg: 'User not authorized!' });
+			return res
+				.status(401)
+				.json({ success: false, msg: 'User not authorized!' });
 		}
 
 		res.json(user);
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'User is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'User is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -96,7 +102,9 @@ router.get('/user/:pid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Settings is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Settings is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -123,7 +131,9 @@ router.put('/user/:pid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Settings is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Settings is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -132,7 +142,9 @@ router.put('/user/:pid', auth, async (req, res) => {
 function isAuthUser(param, req, res) {
 	// Check if settings/profile exists?
 	if (!param) {
-		return res.status(404).json({ msg: 'Settings is not available!' });
+		return res
+			.status(404)
+			.json({ success: false, msg: 'Settings is not available!' });
 	}
 
 	// Check if ther right User requests?
@@ -140,7 +152,9 @@ function isAuthUser(param, req, res) {
 		param.user.id.toString() !== req.user.id &&
 		param.user.toString() !== req.user.id
 	) {
-		return res.status(401).json({ msg: 'User not authorized!' });
+		return res
+			.status(401)
+			.json({ success: false, msg: 'User not authorized!' });
 	}
 }
 

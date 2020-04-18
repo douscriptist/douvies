@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // TEST ROUTE
 app.get('/', (req, res) => {
-	res.status(202).json({ msg: 'Main' });
+	res.status(202).json({ success: true, msg: 'Main' });
 });
 
 // ROUTES
