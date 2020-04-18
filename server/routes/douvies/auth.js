@@ -29,9 +29,9 @@ router.post(
 	[
 		check('input', 'Username or email is required').exists(),
 		check('input', 'Username has to be minimum 6 characters').isLength({
-			min: 6
+			min: 6,
 		}),
-		check('password', 'Password is required!').exists()
+		check('password', 'Password is required!').exists(),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -47,7 +47,9 @@ router.post(
 			if (!user) {
 				if (!userName) {
 					// Security ????
-					return res.status(404).json({ errors: [{ msg: 'User not found!' }] });
+					return res
+						.status(404)
+						.json({ errors: [{ success: false, msg: 'User not found!' }] });
 				} else {
 					user = userName;
 				}
@@ -59,14 +61,14 @@ router.post(
 				// Security ????
 				return res
 					.status(404)
-					.json({ errors: [{ msg: 'Password is wrong!' }] });
+					.json({ errors: [{ success: false, msg: 'Password is wrong!' }] });
 			}
 
 			//
 			const payload = {
 				user: {
-					id: user.id
-				}
+					id: user.id,
+				},
 			};
 
 			jwt.sign(
@@ -76,7 +78,7 @@ router.post(
 				{ expiresIn: 360000 },
 				(err, token) => {
 					if (err) throw err;
-					res.json({ token });
+					res.json({ success: true, token: token });
 				}
 			);
 		} catch (err) {

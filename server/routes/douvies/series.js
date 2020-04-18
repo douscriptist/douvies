@@ -34,15 +34,9 @@ router.post(
 		check('title', 'title is required.').notEmpty(),
 		check('yearFrom', 'yearFrom is required.').notEmpty(),
 		check('personalRate', 'personalRate is required.').notEmpty(),
-		check('isFinished', 'isFinished is required.')
-			.notEmpty()
-			.isBoolean(),
-		check('isFinalled', 'isFinalled is required.')
-			.notEmpty()
-			.isBoolean(),
-		check('isWatched', 'isWatched is required.')
-			.notEmpty()
-			.isBoolean()
+		check('isFinished', 'isFinished is required.').notEmpty().isBoolean(),
+		check('isFinalled', 'isFinalled is required.').notEmpty().isBoolean(),
+		check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -67,7 +61,7 @@ router.post(
 				isFinalled,
 				imdb,
 				language,
-				posterURL
+				posterURL,
 			} = req.body;
 
 			const newSerie = new Serie({
@@ -86,7 +80,7 @@ router.post(
 				imdb,
 				language,
 				posterURL,
-				user: req.user.id
+				user: req.user.id,
 			});
 
 			const serie = await newSerie.save();
@@ -107,7 +101,7 @@ router.get('/', auth, async (req, res) => {
 	try {
 		const series = await Serie.find({ user: req.user.id });
 		if (!series.length)
-			return res.status(404).json({ msg: 'Series not found' });
+			return res.status(404).json({ success: false, msg: 'Series not found' });
 		res.json(series);
 	} catch (err) {
 		console.error(err.message);
@@ -133,12 +127,17 @@ router.get('/', auth, async (req, res) => {
 router.get('/:sid', auth, async (req, res) => {
 	try {
 		const serie = await Serie.findById(req.params.sid);
-		if (!serie) return res.status(404).json({ msg: 'Serie is not available!' });
+		if (!serie)
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Serie is not available!' });
 		res.json(serie);
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Serie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Serie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -164,7 +163,9 @@ router.put('/:sid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Movie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Movie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -178,12 +179,16 @@ router.delete('/:sid', auth, async (req, res) => {
 		const serie = await Serie.findById(req.params.sid);
 		// Check if serie exists?
 		if (!serie) {
-			return res.status(404).json({ msg: 'Serie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Serie is not available!' });
 		}
 
 		// Check if ther right User requests?
 		if (serie.user.toString() !== req.user.id) {
-			return res.status(401).json({ msg: 'User not authorized!' });
+			return res
+				.status(401)
+				.json({ success: false, msg: 'User not authorized!' });
 		}
 
 		await serie.remove();
@@ -191,7 +196,9 @@ router.delete('/:sid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Serie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Serie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -200,11 +207,15 @@ router.delete('/:sid', auth, async (req, res) => {
 function isAuth(param, req, res) {
 	// Check if movie exists?
 	if (!param) {
-		return res.status(404).json({ msg: 'Serie is not available!' });
+		return res
+			.status(404)
+			.json({ success: false, msg: 'Serie is not available!' });
 	}
 	// Check if ther right User requests?
 	if (param.user.toString() !== req.user.id) {
-		return res.status(401).json({ msg: 'User not authorized!' });
+		return res
+			.status(401)
+			.json({ success: false, msg: 'User not authorized!' });
 	}
 }
 

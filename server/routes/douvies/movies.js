@@ -33,9 +33,7 @@ router.post(
 		check('imdbId', 'imdbId is required.').notEmpty(),
 		check('title', 'title is required.').notEmpty(),
 		check('personalRate', 'personalRate is required.').notEmpty(),
-		check('isWatched', 'isWatched is required.')
-			.notEmpty()
-			.isBoolean()
+		check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -56,7 +54,7 @@ router.post(
 				isWatched,
 				imdb,
 				language,
-				posterURL
+				posterURL,
 			} = req.body;
 
 			const newMovie = new Movie({
@@ -72,7 +70,7 @@ router.post(
 				imdb,
 				language,
 				posterURL,
-				user: req.user.id
+				user: req.user.id,
 			});
 
 			const movie = await newMovie.save();
@@ -91,7 +89,7 @@ router.get('/', async (req, res) => {
 	try {
 		const movies = await Movie.find();
 		if (!movies.length)
-			return res.status(404).json({ msg: 'Movies not found' });
+			return res.status(404).json({ success: false, msg: 'Movies not found' });
 		res.json(movies);
 	} catch (err) {
 		console.error(err.message);
@@ -111,7 +109,9 @@ router.get('/:mid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Movie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Movie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -136,7 +136,9 @@ router.put('/:mid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Movie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Movie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -155,7 +157,9 @@ router.delete('/:mid', auth, async (req, res) => {
 	} catch (err) {
 		console.error(err.message);
 		if (err.kind === 'ObjectId') {
-			return res.status(404).json({ msg: 'Movie is not available!' });
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Movie is not available!' });
 		}
 		res.status(500).send('Server Error');
 	}
@@ -164,11 +168,15 @@ router.delete('/:mid', auth, async (req, res) => {
 function isAuth(param, req, res) {
 	// Check if movie exists?
 	if (!param) {
-		return res.status(404).json({ msg: 'Movie is not available!' });
+		return res
+			.status(404)
+			.json({ success: false, msg: 'Movie is not available!' });
 	}
 	// Check if ther right User requests?
 	if (param.user.toString() !== req.user.id) {
-		return res.status(401).json({ msg: 'User not authorized!' });
+		return res
+			.status(401)
+			.json({ success: false, msg: 'User not authorized!' });
 	}
 }
 
