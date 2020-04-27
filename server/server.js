@@ -1,15 +1,49 @@
 const express = require('express');
 const connectDB = require('./utils/Database');
-const app = express();
-
+const morgan = require('morgan');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 // cors?
 
 // DB CONNECTION
 connectDB();
 
+const app = express();
+
 // INIT MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Sanitize Data
+app.use(mongoSanitize());
+
+// Set Security Headers
+app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
+
+// Rate Limiting
+const limiter = rateLimit({
+	windowMs: 10 * 60 * 1000, // 10 mins
+	max: 100,
+});
+app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
+
+// Enable CORS // If API is public
+app.use(cors());
+
+// Morgan Logger
+if (process.env.NODE_ENV === 'development') {
+	app.use(morgan('dev'));
+}
 
 // TEST ROUTE
 app.get('/', (req, res) => {
