@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const auth = require('../../utils/auth');
+const auth = require('../utils/auth');
 
-const UserSetting = require('../../models/UserSetting');
-const Serie = require('../../models/Serie');
-const User = require('../../models/User');
+const UserSetting = require('../models/UserSetting');
+const Serie = require('../models/Serie');
+const User = require('../models/User');
 
 // @route   GET douvies/profile
 // @desc    Get all Users

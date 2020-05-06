@@ -1,5 +1,6 @@
+const path = require('path');
 const express = require('express');
-const connectDB = require('./utils/Database');
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -11,6 +12,10 @@ const cors = require('cors');
 // cors?
 
 const errorHandler = require('./middlewares/errorHandler');
+const connectDB = require('./config/db');
+
+// Load env file
+dotenv.config({ path: './config/config.env' });
 
 // DB CONNECTION
 connectDB();
@@ -48,17 +53,15 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
 
-// TEST ROUTE
-app.get('/', (req, res) => {
-	res.status(202).json({ success: true, msg: 'Main' });
-});
+// Set static folder for upload images etc.
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
-app.use('/douvies/users', require('./routes/douvies/users'));
-app.use('/douvies/movies', require('./routes/douvies/movies'));
-app.use('/douvies/series', require('./routes/douvies/series'));
-app.use('/douvies/profile', require('./routes/douvies/profile'));
-app.use('/douvies/auth', require('./routes/douvies/auth'));
+app.use('/douvies/auth', require('./routes/auth.routes'));
+app.use('/douvies/users', require('./routes/users.routes'));
+app.use('/douvies/movies', require('./routes/movies.routes'));
+app.use('/douvies/series', require('./routes/series.routes'));
+app.use('/douvies/profile', require('./routes/profile.routes'));
 
 // Custom Error Handler for express next()
 // app.use(errorHandler);

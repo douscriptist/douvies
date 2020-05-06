@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const auth = require('../../utils/auth');
+const auth = require('../utils/auth');
 const jwt = require('jsonwebtoken');
 const { check, validationResult, oneOf } = require('express-validator');
-require('dotenv').config();
 
-const User = require('../../models/User');
+const User = require('../models/User');
 
 // @route   GET douvies/auth
 // @desc    Test Route

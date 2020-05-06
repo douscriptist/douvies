@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const auth = require('../../utils/auth');
+const auth = require('../utils/auth');
 
-const Serie = require('../../models/Serie');
-const User = require('../../models/User');
+const Serie = require('../models/Serie');
+const User = require('../models/User');
 
 // @route   GET douvies/series/favourites
 // @desc    Get favourite series

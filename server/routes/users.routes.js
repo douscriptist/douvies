@@ -4,10 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 // const config = require('config');
 const { check, validationResult } = require('express-validator');
-require('dotenv').config();
 
-const User = require('../../models/User');
-const UserSetting = require('../../models/UserSetting');
+const User = require('../models/User');
+const UserSetting = require('../models/UserSetting');
 
 // @route   POST douvies/users
 // @desc    Register User
@@ -20,13 +19,13 @@ router.post(
 		check('username', 'username is required!').notEmpty(),
 		check('username', 'username length between 6-12').isLength({
 			min: 6,
-			max: 12
+			max: 12,
 		}),
 		check('email', 'Enter a valid email!').isEmail(),
 		check('password', 'Enter a password between 6 - 12 digits!').isLength({
 			min: 6,
-			max: 12
-		})
+			max: 12,
+		}),
 	],
 	async (req, res) => {
 		const errors = validationResult(req);
@@ -62,7 +61,7 @@ router.post(
 				email,
 				username,
 				// avatar,
-				password
+				password,
 			});
 
 			// Encrpyt password
@@ -71,7 +70,7 @@ router.post(
 
 			// Create User default Settings
 			const newUserSetting = new UserSetting({
-				user: user.id
+				user: user.id,
 			});
 
 			await user.save();
@@ -80,8 +79,8 @@ router.post(
 			// Return jwt @because after register user need to logged in
 			const payload = {
 				user: {
-					id: user.id
-				}
+					id: user.id,
+				},
 			};
 
 			jwt.sign(
