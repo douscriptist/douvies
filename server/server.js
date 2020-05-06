@@ -9,6 +9,8 @@ const hpp = require('hpp');
 const cors = require('cors');
 // cors?
 
+const errorHandler = require('./middlewares/errorHandler');
+
 // DB CONNECTION
 connectDB();
 
@@ -57,8 +59,18 @@ app.use('/douvies/series', require('./routes/douvies/series'));
 app.use('/douvies/profile', require('./routes/douvies/profile'));
 app.use('/douvies/auth', require('./routes/douvies/auth'));
 
+// Custom Error Handler for express next()
+// app.use(errorHandler);
+
 // LISTEN
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
+
+// Handle unhandled promise rejections
+// process.on('unhandledRejection', (err, promise) => {
+// 	console.log(`Error: ${err.message}`.bgRed.bold);
+// 	// Close server & exit process
+// 	server.close(() => process.exit(1));
+// });
