@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./utils/Database');
 const morgan = require('morgan');
+const colors = require('colors');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -65,12 +66,14 @@ app.use('/douvies/auth', require('./routes/douvies/auth'));
 // LISTEN
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(
+		`Server running in "${process.env.NODE_ENV}" mode on port ${PORT}`.blue.bold
+	);
 });
 
 // Handle unhandled promise rejections
-// process.on('unhandledRejection', (err, promise) => {
-// 	console.log(`Error: ${err.message}`.bgRed.bold);
-// 	// Close server & exit process
-// 	server.close(() => process.exit(1));
-// });
+process.on('unhandledRejection', (err, promise) => {
+	console.log(`Error: ${err.message}`.bgRed.bold);
+	// Close server & exit process
+	server.close(() => process.exit(1));
+});
