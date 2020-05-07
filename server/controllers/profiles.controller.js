@@ -1,23 +1,21 @@
-const express = require('express');
+const CustomError = require('../utils/CustomError');
+const asyncHandler = require('../middlewares/asyncHandler');
 const mongoose = require('mongoose');
-const router = express.Router();
-const auth = require('../../utils/auth');
 
-const UserSetting = require('../../models/UserSetting');
-const Serie = require('../../models/Serie');
-const User = require('../../models/User');
+const UserSetting = require('../models/UserSetting');
+const User = require('../models/User');
 
 // @route   GET douvies/profile
 // @desc    Get all Users
 // @access  Public?
-router.get('/', async (req, res) => {
+exports.getAllProfiles = asyncHandler(async (req, res) => {
 	res.status(200).json({ success: true, page: 'Profile & Settings' });
 });
 
 // @route   GET douvies/profile/:uid
 // @desc    Get a profile by user id
 // @access  Private
-router.get('/:uid', auth, async (req, res) => {
+exports.getProfileByUID = asyncHandler(async (req, res) => {
 	try {
 		// const user = await User.findById(req.params.uid).select('-password');
 		const [user] = await User.aggregate(
@@ -90,7 +88,7 @@ router.get('/:uid', auth, async (req, res) => {
 // @route   GET douvies/profile/user/:pid
 // @desc    Get a user profile by profile id
 // @access  Private
-router.get('/user/:pid', auth, async (req, res) => {
+exports.getProfileByPID = asyncHandler(async (req, res) => {
 	try {
 		const settings = await UserSetting.findById(req.params.pid).populate(
 			'user',
@@ -113,7 +111,7 @@ router.get('/user/:pid', auth, async (req, res) => {
 // @route   PUT douvies/profile/user/:pid
 // @desc    Update user profile by profile id
 // @access  Private
-router.put('/user/:pid', auth, async (req, res) => {
+exports.updateProfileByPID = asyncHandler(async (req, res) => {
 	const { darkMode, hideFavourites, hideProfile } = req.body;
 
 	try {
@@ -139,6 +137,42 @@ router.put('/user/:pid', auth, async (req, res) => {
 	}
 });
 
+// @route   PUT douvies/profile/:uid
+// @desc    Update user profile by user id
+// @access  Private
+exports.updateProfileByUID = asyncHandler(async (req, res) => {
+	const { darkMode, hideFavourites, hideProfile } = req.body;
+
+	try {
+		const updated = await UserSetting.findById(req.params.pid);
+		if (!isAuthUser(updated, req, res)) {
+			// LATER: refactor
+			// Update area
+			updated.darkMode = darkMode;
+			updated.hideFavourites = hideFavourites;
+			updated.hideProfile = hideProfile;
+			updated.updatedAt = Date.now();
+			await updated.save();
+			res.json(updated);
+		}
+	} catch (err) {
+		console.error(err.message);
+		if (err.kind === 'ObjectId') {
+			return res
+				.status(404)
+				.json({ success: false, msg: 'Settings is not available!' });
+		}
+		res.status(500).send('Server Error');
+	}
+});
+
+exports.resetProfile = asyncHandler(async (req, res) => {
+	res.status(200).json({
+		success: true,
+		msg: 'Profile deleted/Resetted to default settings',
+	});
+});
+
 function isAuthUser(param, req, res) {
 	// Check if settings/profile exists?
 	if (!param) {
@@ -157,5 +191,3 @@ function isAuthUser(param, req, res) {
 			.json({ success: false, msg: 'User not authorized!' });
 	}
 }
-
-module.exports = router;

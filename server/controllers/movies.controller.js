@@ -1,15 +1,14 @@
-const express = require('express');
-const router = express.Router();
+const CustomError = require('../utils/CustomError');
+const asyncHandler = require('../middlewares/asyncHandler');
 const { check, validationResult } = require('express-validator');
-const auth = require('../../utils/auth');
 
-const Movie = require('../../models/Movie');
-const User = require('../../models/User');
+const Movie = require('../models/Movie');
+const User = require('../models/User');
 
 // @route   GET douvies/movies/favourites
 // @desc    Get favourite movies
 // @access  Private
-router.get('/favourites', auth, async (req, res) => {
+exports.getFavourites = asyncHandler(async (req, res) => {
 	res.json({ success: true, msg: 'Favourite Series' });
 	// try {
 	// 	const movies = await Serie.find({ user: req.user.id });
@@ -25,67 +24,56 @@ router.get('/favourites', auth, async (req, res) => {
 // @route   POST douvies/movies
 // @desc    Post a movie
 // @access  Private
-router.post(
-	'/',
-	[
-		auth,
-		check('apiId', 'apiId is required.').notEmpty(),
-		check('imdbId', 'imdbId is required.').notEmpty(),
-		check('title', 'title is required.').notEmpty(),
-		check('personalRate', 'personalRate is required.').notEmpty(),
-		check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
-	],
-	async (req, res) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
-		}
-		try {
-			// const user = await User.findById(req.user.id).select('-password');
-			const {
-				apiId,
-				imdbId,
-				title,
-				director,
-				description,
-				type,
-				year,
-				personalRate,
-				isWatched,
-				imdb,
-				language,
-				posterURL,
-			} = req.body;
-
-			const newMovie = new Movie({
-				apiId,
-				imdbId,
-				title,
-				director,
-				description,
-				type,
-				year,
-				personalRate,
-				isWatched,
-				imdb,
-				language,
-				posterURL,
-				user: req.user.id,
-			});
-
-			const movie = await newMovie.save();
-			res.json(movie);
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send('Server Error');
-		}
+exports.createMovie = asyncHandler(async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
 	}
-);
+	try {
+		// const user = await User.findById(req.user.id).select('-password');
+		const {
+			apiId,
+			imdbId,
+			title,
+			director,
+			description,
+			type,
+			year,
+			personalRate,
+			isWatched,
+			imdb,
+			language,
+			posterURL,
+		} = req.body;
+
+		const newMovie = new Movie({
+			apiId,
+			imdbId,
+			title,
+			director,
+			description,
+			type,
+			year,
+			personalRate,
+			isWatched,
+			imdb,
+			language,
+			posterURL,
+			user: req.user.id,
+		});
+
+		const movie = await newMovie.save();
+		res.json(movie);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
 
 // @route   GET douvies/movies
 // @desc    Maybe Upcoming?
 // @access  Public?
-router.get('/', async (req, res) => {
+exports.getMovies = asyncHandler(async (req, res) => {
 	try {
 		const movies = await Movie.find();
 		if (!movies.length)
@@ -100,7 +88,7 @@ router.get('/', async (req, res) => {
 // @route   GET douvies/movies/:mid
 // @desc    Get a movie
 // @access  Private
-router.get('/:mid', auth, async (req, res) => {
+exports.getMovie = asyncHandler(async (req, res) => {
 	try {
 		const movie = await Movie.findById(req.params.mid);
 		if (!isAuth(movie, req, res)) {
@@ -120,7 +108,7 @@ router.get('/:mid', auth, async (req, res) => {
 // @route   PUT douvies/movies/:mid
 // @desc    Update a movie
 // @access  Private
-router.put('/:mid', auth, async (req, res) => {
+exports.updateMovie = asyncHandler(async (req, res) => {
 	const updatedMovie = { ...req.body, updatedAt: Date.now() };
 	try {
 		const isMovie = await Movie.findById(req.params.mid);
@@ -147,7 +135,7 @@ router.put('/:mid', auth, async (req, res) => {
 // @route   DELETE douvies/movies/:mid
 // @desc    Delete a movie
 // @access  Private
-router.delete('/:mid', auth, async (req, res) => {
+exports.deleteMovie = asyncHandler(async (req, res) => {
 	try {
 		const movie = await Movie.findById(req.params.mid);
 		if (!isAuth(movie, req, res)) {
@@ -180,4 +168,10 @@ function isAuth(param, req, res) {
 	}
 }
 
-module.exports = router;
+exports.check = [
+	check('apiId', 'apiId is required.').notEmpty(),
+	check('imdbId', 'imdbId is required.').notEmpty(),
+	check('title', 'title is required.').notEmpty(),
+	check('personalRate', 'personalRate is required.').notEmpty(),
+	check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
+];

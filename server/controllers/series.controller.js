@@ -1,15 +1,14 @@
-const express = require('express');
-const router = express.Router();
+const CustomError = require('../utils/CustomError');
+const asyncHandler = require('../middlewares/asyncHandler');
 const { check, validationResult } = require('express-validator');
-const auth = require('../../utils/auth');
 
-const Serie = require('../../models/Serie');
-const User = require('../../models/User');
+const Serie = require('../models/Serie');
+const User = require('../models/User');
 
 // @route   GET douvies/series/favourites
 // @desc    Get favourite series
 // @access  Private
-router.get('/favourites', auth, async (req, res) => {
+exports.getFavourites = asyncHandler(async (req, res) => {
 	res.json({ success: true, msg: 'Favourite Series' });
 	// try {
 	// 	const series = await Serie.find({ user: req.user.id });
@@ -25,79 +24,65 @@ router.get('/favourites', auth, async (req, res) => {
 // @route   POST douvies/series
 // @desc    Post a serie
 // @access  Private
-router.post(
-	'/',
-	[
-		auth,
-		check('apiId', 'apiId is required.').notEmpty(),
-		check('imdbId', 'imdbId is required.').notEmpty(),
-		check('title', 'title is required.').notEmpty(),
-		check('yearFrom', 'yearFrom is required.').notEmpty(),
-		check('personalRate', 'personalRate is required.').notEmpty(),
-		check('isFinished', 'isFinished is required.').notEmpty().isBoolean(),
-		check('isFinalled', 'isFinalled is required.').notEmpty().isBoolean(),
-		check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
-	],
-	async (req, res) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
-		}
-
-		try {
-			// const user = await User.findById(req.user.id).select('-password');
-			const {
-				apiId,
-				imdbId,
-				title,
-				description,
-				type,
-				yearFrom,
-				yearTo,
-				seasons,
-				personalRate,
-				isWatched,
-				isFinished,
-				isFinalled,
-				imdb,
-				language,
-				posterURL,
-			} = req.body;
-
-			const newSerie = new Serie({
-				apiId,
-				imdbId,
-				title,
-				description,
-				type,
-				yearFrom,
-				yearTo,
-				seasons,
-				personalRate,
-				isWatched,
-				isFinished,
-				isFinalled,
-				imdb,
-				language,
-				posterURL,
-				user: req.user.id,
-			});
-
-			const serie = await newSerie.save();
-			res.json(serie);
-		} catch (err) {
-			console.error(err.message);
-			res.status(500).send('Server Error');
-		}
+exports.createSerie = asyncHandler(async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
 	}
-);
+
+	try {
+		// const user = await User.findById(req.user.id).select('-password');
+		const {
+			apiId,
+			imdbId,
+			title,
+			description,
+			type,
+			yearFrom,
+			yearTo,
+			seasons,
+			personalRate,
+			isWatched,
+			isFinished,
+			isFinalled,
+			imdb,
+			language,
+			posterURL,
+		} = req.body;
+
+		const newSerie = new Serie({
+			apiId,
+			imdbId,
+			title,
+			description,
+			type,
+			yearFrom,
+			yearTo,
+			seasons,
+			personalRate,
+			isWatched,
+			isFinished,
+			isFinalled,
+			imdb,
+			language,
+			posterURL,
+			user: req.user.id,
+		});
+
+		const serie = await newSerie.save();
+		res.json(serie);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
 
 // FIX: Here will be upcoming public
 // FIX: For now, cuz of safety, returns user's series by private
 // @route   GET douvies/series
 // @desc    Maybe Upcoming?
 // @access  Public?
-router.get('/', auth, async (req, res) => {
+exports.getSeries = asyncHandler(async (req, res) => {
 	try {
 		const series = await Serie.find({ user: req.user.id });
 		if (!series.length)
@@ -109,7 +94,7 @@ router.get('/', auth, async (req, res) => {
 	}
 });
 // LATER: This will be moved to profile api section
-// router.get('/', auth, async (req, res) => {
+// exports.function('/', auth, async (req, res) => {
 // 	try {
 // 		const series = await Serie.find({ user: req.user.id });
 // 		if (!series.length)
@@ -124,7 +109,7 @@ router.get('/', auth, async (req, res) => {
 // @route   GET douvies/series/:sid
 // @desc    Get a serie
 // @access  Private
-router.get('/:sid', auth, async (req, res) => {
+exports.getSerie = asyncHandler(async (req, res) => {
 	try {
 		const serie = await Serie.findById(req.params.sid);
 		if (!serie)
@@ -146,7 +131,7 @@ router.get('/:sid', auth, async (req, res) => {
 // @route   PUT douvies/series/:sid
 // @desc    Update a serie
 // @access  Private
-router.put('/:sid', auth, async (req, res) => {
+exports.updateSerie = asyncHandler(async (req, res) => {
 	const updatedSerie = { ...req.body, updatedAt: Date.now() };
 	console.log(updatedSerie);
 	try {
@@ -174,7 +159,7 @@ router.put('/:sid', auth, async (req, res) => {
 // @route   DELETE douvies/series/:sid
 // @desc    Delete a serie
 // @access  Private
-router.delete('/:sid', auth, async (req, res) => {
+exports.deleteSerie = asyncHandler(async (req, res) => {
 	try {
 		const serie = await Serie.findById(req.params.sid);
 		// Check if serie exists?
@@ -219,4 +204,13 @@ function isAuth(param, req, res) {
 	}
 }
 
-module.exports = router;
+exports.check = [
+	check('apiId', 'apiId is required.').notEmpty(),
+	check('imdbId', 'imdbId is required.').notEmpty(),
+	check('title', 'title is required.').notEmpty(),
+	check('yearFrom', 'yearFrom is required.').notEmpty(),
+	check('personalRate', 'personalRate is required.').notEmpty(),
+	check('isFinished', 'isFinished is required.').notEmpty().isBoolean(),
+	check('isFinalled', 'isFinalled is required.').notEmpty().isBoolean(),
+	check('isWatched', 'isWatched is required.').notEmpty().isBoolean(),
+];

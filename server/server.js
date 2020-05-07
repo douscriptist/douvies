@@ -1,6 +1,8 @@
+const path = require('path');
 const express = require('express');
-const connectDB = require('./utils/Database');
+const dotenv = require('dotenv');
 const morgan = require('morgan');
+const colors = require('colors');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -8,6 +10,12 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
 // cors?
+
+const errorHandler = require('./middlewares/errorHandler');
+const connectDB = require('./config/db');
+
+// Load env file
+dotenv.config({ path: './config/config.env' });
 
 // DB CONNECTION
 connectDB();
@@ -45,20 +53,30 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
 
-// TEST ROUTE
-app.get('/', (req, res) => {
-	res.status(202).json({ success: true, msg: 'Main' });
-});
+// Set static folder for upload images etc.
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
-app.use('/douvies/users', require('./routes/douvies/users'));
-app.use('/douvies/movies', require('./routes/douvies/movies'));
-app.use('/douvies/series', require('./routes/douvies/series'));
-app.use('/douvies/profile', require('./routes/douvies/profile'));
-app.use('/douvies/auth', require('./routes/douvies/auth'));
+app.use('/douvies/auth', require('./routes/auth.routes'));
+app.use('/douvies/users', require('./routes/users.routes'));
+app.use('/douvies/movies', require('./routes/movies.routes'));
+app.use('/douvies/series', require('./routes/series.routes'));
+app.use('/douvies/profile', require('./routes/profiles.routes'));
+
+// Custom Error Handler for express next()
+// app.use(errorHandler);
 
 // LISTEN
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(
+		`Server running in "${process.env.NODE_ENV}" mode on port ${PORT}`.blue.bold
+	);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+	console.log(`Error: ${err.message}`.bgRed.bold);
+	// Close server & exit process
+	server.close(() => process.exit(1));
 });
