@@ -5,11 +5,11 @@ const {
 	login,
 } = require('../controllers/auth.controller');
 
-const auth = require('../utils/auth');
+const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.get('/', auth, getLoggedInUser);
+router.get('/', protect, getLoggedInUser);
 router.post('/', check, login);
 
 module.exports = router;

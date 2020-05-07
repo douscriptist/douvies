@@ -7,19 +7,19 @@ const {
 	updateProfileByUID,
 	resetProfile,
 } = require('../controllers/profiles.controller');
-const auth = require('../utils/auth');
+const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
 router.get('/', getAllProfiles);
-router.get('/:uid', auth, getProfileByUID);
-router.put('/:uid', auth, updateProfileByUID);
-router.delete('/:pid', auth, resetProfile);
+router.get('/:uid', protect, getProfileByUID);
+router.put('/:uid', protect, updateProfileByUID);
+router.delete('/:pid', protect, resetProfile);
 
 // TODO: asyncHandler next param
 // TODO: /user re-route
 // TODO: refactor all
-router.get('/user/:pid', auth, getProfileByPID);
-router.put('/user/:pid', auth, updateProfileByPID);
+router.get('/user/:pid', protect, getProfileByPID);
+router.put('/user/:pid', protect, updateProfileByPID);
 
 module.exports = router;

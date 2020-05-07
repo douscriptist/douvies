@@ -8,15 +8,16 @@ const {
 	updateMovie,
 	deleteMovie,
 } = require('../controllers/movies.controller');
-const auth = require('../utils/auth');
+
+const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
 router.get('/', getMovies);
-router.post('/', auth, check, createMovie);
-router.get('/:mid', auth, getMovie);
-router.put('/:mid', auth, updateMovie);
-router.delete('/:mid', auth, deleteMovie);
-router.get('/favourites', auth, getFavourites);
+router.post('/', protect, check, createMovie);
+router.get('/:mid', protect, getMovie);
+router.put('/:mid', protect, updateMovie);
+router.delete('/:mid', protect, deleteMovie);
+router.get('/favourites', protect, getFavourites);
 
 module.exports = router;

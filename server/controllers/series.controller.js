@@ -1,7 +1,6 @@
 const CustomError = require('../utils/CustomError');
 const asyncHandler = require('../middlewares/asyncHandler');
 const { check, validationResult } = require('express-validator');
-const auth = require('../utils/auth');
 
 const Serie = require('../models/Serie');
 const User = require('../models/User');
@@ -206,7 +205,6 @@ function isAuth(param, req, res) {
 }
 
 exports.check = [
-	auth,
 	check('apiId', 'apiId is required.').notEmpty(),
 	check('imdbId', 'imdbId is required.').notEmpty(),
 	check('title', 'title is required.').notEmpty(),

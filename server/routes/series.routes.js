@@ -8,15 +8,16 @@ const {
 	updateSerie,
 	deleteSerie,
 } = require('../controllers/series.controller');
-const auth = require('../utils/auth');
+
+const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.get('/', auth, getSeries);
-router.post('/', auth, check, createSerie);
-router.get('/:sid', auth, getSerie);
-router.put('/:sid', auth, updateSerie);
-router.delete('/:sid', auth, deleteSerie);
-router.get('/favourites', auth, getFavourites);
+router.get('/', protect, getSeries);
+router.post('/', protect, check, createSerie);
+router.get('/:sid', protect, getSerie);
+router.put('/:sid', protect, updateSerie);
+router.delete('/:sid', protect, deleteSerie);
+router.get('/favourites', protect, getFavourites);
 
 module.exports = router;
