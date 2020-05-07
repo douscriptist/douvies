@@ -61,7 +61,7 @@ app.use('/douvies/auth', require('./routes/auth.routes'));
 app.use('/douvies/users', require('./routes/users.routes'));
 app.use('/douvies/movies', require('./routes/movies.routes'));
 app.use('/douvies/series', require('./routes/series.routes'));
-app.use('/douvies/profile', require('./routes/profile.routes'));
+app.use('/douvies/profile', require('./routes/profiles.routes'));
 
 // Custom Error Handler for express next()
 // app.use(errorHandler);
