@@ -57,11 +57,13 @@ exports.register = asyncHandler(async (req, res, next) => {
 	await newUserSetting.save();
 
 	// Return jwt @because after register user need to logged in
-	const payload = {
-		user: {
-			id: user.id,
-		},
-	};
+	// req.user.id or req.id
+	// const payload = {
+	// 	user: {
+	// 		id: user.id,
+	// 	},
+	// };
+	const payload = { id: user.id };
 
 	jwt.sign(
 		payload,

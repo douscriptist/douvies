@@ -64,7 +64,7 @@ app.use('/douvies/series', require('./routes/series.routes'));
 app.use('/douvies/profile', require('./routes/profiles.routes'));
 
 // Custom Error Handler for express next()
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // LISTEN
 const PORT = process.env.PORT || 5000;
