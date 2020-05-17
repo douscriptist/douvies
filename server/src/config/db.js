@@ -13,7 +13,6 @@ const connectDB = async () => {
 		useCreateIndex: true,
 		useFindAndModify: false,
 	});
-	console.log('MongoDB connected!');
 	console.log(`MongoDB Connected: ${conn.connection.host}`.yellow.bold);
 };
 
