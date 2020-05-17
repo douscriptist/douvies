@@ -1,7 +1,9 @@
 */node_modules/
-*/config/config.env
 TODOS.md
 server/api.md
+server/douvies-specs.md
+**/.env
+*/dist/**/*
 
 ########################################################################################################################
 #client/
