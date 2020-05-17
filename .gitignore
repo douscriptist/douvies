@@ -1,6 +1,7 @@
 */node_modules/
 TODOS.md
 server/api.md
+server/douvies-specs.md
 **/.env
 */dist/**/*
 
