@@ -4,8 +4,8 @@
 	"description": "api of a movie app named douvies",
 	"main": "server.js",
 	"scripts": {
-		"start": "cross-env NODE_ENV=production node server",
-		"dev": "nodemon server"
+		"start": "cross-env NODE_ENV=production node ./src/server",
+		"dev": "nodemon ./src/server"
 	},
 	"author": "Kaan Yilmaz",
 	"license": "ISC",

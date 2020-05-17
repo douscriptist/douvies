@@ -13,7 +13,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 
 // Load env file
-dotenv.config({ path: './config/config.env' });
+dotenv.config();
 
 // DB CONNECTION
 connectDB();
