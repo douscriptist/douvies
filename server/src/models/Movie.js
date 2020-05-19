@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const { genres, definitions } = require('../utils/constants');
 
 const MovieSchema = new mongoose.Schema(
 	{
@@ -48,34 +49,7 @@ const MovieSchema = new mongoose.Schema(
 		imdbVotes: Number,
 		genres: {
 			type: [String],
-			enum: [
-				'Action',
-				'Adventure',
-				'Animation',
-				'Biography',
-				'Comedy',
-				'Crime',
-				'Documentary',
-				'Drama',
-				'Family',
-				'Fantasy',
-				'Film-Noir',
-				'Game-Show',
-				'History',
-				'Horror',
-				'Music',
-				'Musical',
-				'Mystery',
-				'News',
-				'Reality-TV',
-				'Romance',
-				'Sci-Fi',
-				'Sport',
-				'Talk-Show',
-				'Thriller',
-				'War',
-				'Western',
-			],
+			enum: [...genres],
 		},
 		language: String,
 		releaseDate: Date,
@@ -90,15 +64,7 @@ const MovieSchema = new mongoose.Schema(
 		personalPref: {
 			type: [String],
 			required: [true, 'Movie definition is required.'],
-			enum: [
-				'Captain Phillips',
-				'Waste of time',
-				'Kader',
-				'Naysu',
-				'Watchable',
-				'Ehh',
-				'Will be added more...',
-			],
+			enum: [...definitions],
 		},
 		isWatched: {
 			type: Boolean,
@@ -109,8 +75,13 @@ const MovieSchema = new mongoose.Schema(
 		updatedAt: { type: Date, default: Date.now },
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user',
+			ref: 'User',
 			required: true,
+			profile: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Profile',
+				required: true,
+			},
 		},
 	},
 	{
@@ -126,4 +97,4 @@ MovieSchema.pre('save', function (next) {
 	next();
 });
 
-module.exports = User = mongoose.model('movie', MovieSchema);
+module.exports = User = mongoose.model('Movie', MovieSchema);
