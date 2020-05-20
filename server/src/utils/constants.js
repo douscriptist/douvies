@@ -36,3 +36,13 @@ export const definitions = [
 	'Ehh',
 	'Will be added more...',
 ];
+
+export const orderTypeOptions = [
+	'newest',
+	'oldest',
+	'imdbRate',
+	'personalRate',
+	'year',
+];
+
+export const privacyOptions = ['public', 'private', 'unlisted'];

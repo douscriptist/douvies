@@ -86,6 +86,10 @@ const SerieSchema = new mongoose.Schema(
 			type: Boolean,
 			required: [true, 'Did serie ended/finalled?'],
 		},
+		lists: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: 'List',
+		},
 		createdAt: { type: Date, default: Date.now },
 		updatedAt: { type: Date, default: Date.now },
 		user: {

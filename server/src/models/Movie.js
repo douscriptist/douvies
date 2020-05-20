@@ -75,6 +75,10 @@ const MovieSchema = new mongoose.Schema(
 			required: true,
 			default: true,
 		},
+		lists: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: 'List',
+		},
 		createdAt: { type: Date, default: Date.now },
 		updatedAt: { type: Date, default: Date.now },
 		user: {
