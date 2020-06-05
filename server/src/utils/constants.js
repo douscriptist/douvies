@@ -1,4 +1,4 @@
-export const genres = [
+exports.genres = [
 	'Action',
 	'Adventure',
 	'Animation',
@@ -26,8 +26,7 @@ export const genres = [
 	'War',
 	'Western',
 ];
-
-export const definitions = [
+exports.definitions = [
 	'Captain Phillips',
 	'Waste of time',
 	'Kader',
@@ -37,7 +36,7 @@ export const definitions = [
 	'Will be added more...',
 ];
 
-export const orderTypeOptions = [
+exports.orderTypeOptions = [
 	'newest',
 	'oldest',
 	'imdbRate',
@@ -45,4 +44,4 @@ export const orderTypeOptions = [
 	'year',
 ];
 
-export const privacyOptions = ['public', 'private', 'unlisted'];
+exports.privacyOptions = ['public', 'private', 'unlisted'];
