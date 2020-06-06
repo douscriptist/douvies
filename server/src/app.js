@@ -55,10 +55,10 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
-app.use('/douvies/auth', require('./routes/auth.routes'));
-app.use('/douvies/users', require('./routes/users.routes'));
-app.use('/douvies/movies', require('./routes/movies.routes'));
-app.use('/douvies/series', require('./routes/series.routes'));
-app.use('/douvies/profile', require('./routes/profiles.routes'));
+app.use('/douvies/auth', require('./routes/auth'));
+app.use('/douvies/users', require('./routes/users'));
+app.use('/douvies/movies', require('./routes/movies'));
+app.use('/douvies/series', require('./routes/series'));
+app.use('/douvies/profile', require('./routes/profiles'));
 
 module.exports = app;
