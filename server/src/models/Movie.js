@@ -56,7 +56,11 @@ const MovieSchema = new mongoose.Schema(
 		year: Number,
 		runtime: String,
 		averageRating: Number,
-		personalRate: Number,
+		personalRate: {
+			type: Number,
+			min: [1, 'Rating must be at least 1'],
+			max: [10, 'Rating must can not be more than 10'],
+		},
 		personalComments: {
 			type: String,
 			maxlength: [100, 'Comment cannot be longer than 100 characters'],
@@ -70,6 +74,10 @@ const MovieSchema = new mongoose.Schema(
 			type: Boolean,
 			required: true,
 			default: true,
+		},
+		lists: {
+			type: [mongoose.Schema.Types.ObjectId],
+			ref: 'List',
 		},
 		createdAt: { type: Date, default: Date.now },
 		updatedAt: { type: Date, default: Date.now },

@@ -6,14 +6,14 @@ const ProfileSchema = new mongoose.Schema({
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },
-	movies: {
-		type: [mongoose.Schema.Types.ObjectId],
-		ref: 'movie',
-	},
-	series: {
-		type: [mongoose.Schema.Types.ObjectId],
-		ref: 'serie',
-	},
+	// movies: {
+	// 	type: [mongoose.Schema.Types.ObjectId],
+	// 	ref: 'movie',
+	// },
+	// series: {
+	// 	type: [mongoose.Schema.Types.ObjectId],
+	// 	ref: 'serie',
+	// },
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
 	user: {
@@ -24,7 +24,7 @@ const ProfileSchema = new mongoose.Schema({
 });
 
 // Reverse populate with virtuals
-BootcampSchema.virtual('movies', {
+ProfileSchema.virtual('movies', {
 	ref: 'Movie',
 	localField: '_id',
 	foreignField: 'user.profile',
@@ -32,7 +32,7 @@ BootcampSchema.virtual('movies', {
 });
 
 // Reverse populate with virtuals
-BootcampSchema.virtual('series', {
+ProfileSchema.virtual('series', {
 	ref: 'Serie',
 	localField: '_id',
 	foreignField: 'user.profile',

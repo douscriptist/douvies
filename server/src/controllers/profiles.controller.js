@@ -2,7 +2,7 @@ const CustomError = require('../utils/CustomError');
 const asyncHandler = require('../middlewares/asyncHandler');
 const mongoose = require('mongoose');
 
-const UserSetting = require('../models/UserSetting');
+const UserSetting = require('../models/Profile');
 const User = require('../models/User');
 
 // @route   GET douvies/profile
