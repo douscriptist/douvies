@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -23,6 +24,9 @@ const app = express();
 // INIT MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Cookie Parser
+app.use(cookieParser());
 
 // Sanitize Data
 app.use(mongoSanitize());

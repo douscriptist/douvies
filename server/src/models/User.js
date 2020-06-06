@@ -57,7 +57,7 @@ UserSchema.pre('save', function (next) {
 		.forEach(
 			(el) => (tempName += el.charAt(0).toUpperCase() + el.slice(1) + ' ')
 		);
-	this.name = tempName;
+	this.name = tempName.trim();
 	next();
 });
 
@@ -73,13 +73,21 @@ UserSchema.pre('save', async function (next) {
 
 // Sign JWT and Return Token
 UserSchema.methods.getSignedJWTToken = function () {
-	return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+	// const payload = {
+	// 	user: {
+	// 		id: this._id,
+	// 	},
+	// };
+	const payload = {
+		id: this._id,
+	};
+	return jwt.sign(payload, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRE_TIME,
 	});
 };
 
 // Match user entered password to hashed password in db
-UserSchema.methods.isMatchPassword = async function (passwordInput) {
+UserSchema.methods.isMatchedPassword = async function (passwordInput) {
 	return await bcrypt.compare(passwordInput, this.password);
 };
 
