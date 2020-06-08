@@ -74,7 +74,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @desc      Get current logged in user
 // @route     GET /api/v1/auth/me
 // @access    Private
-exports.getMe = asyncHandler(async (req, res) => {
+exports.getMe = asyncHandler(async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user.id);
 		res.status(200).json({
@@ -85,6 +85,57 @@ exports.getMe = asyncHandler(async (req, res) => {
 		console.error(err.message);
 		res.status(500).send('Server Error');
 	}
+});
+
+// @desc      Update user details (self not admin privilages)
+// @route     PUT /api/v1/auth/me/update/info
+// @access    Private
+exports.updateMe = asyncHandler(async (req, res, next) => {
+	const updateFields = {};
+	if (req.body.name) {
+		updateFields.name = req.body.name;
+	}
+	if (req.body.username) {
+		updateFields.username = req.body.username;
+	}
+	if (req.body.email) {
+		updateFields.email = req.body.email;
+	}
+
+	// Check and do sth
+	if (!Object.keys(updateFields).length > 0) {
+		return next(new CustomError('There is no any credentials', 401));
+	}
+
+	const user = await User.findByIdAndUpdate(req.user.id, updateFields, {
+		new: true,
+		runValidators: true,
+	});
+
+	res.status(200).json({
+		success: true,
+		data: user,
+	});
+});
+
+// @desc      Update user password (self not admin privilages)
+// @route     PUT /api/v1/auth/me/update/password
+// @access    Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+	const user = await User.findById(req.user.id).select('+password');
+
+	// Check current password is correct
+	if (!(await user.isMatchedPassword(req.body.currentPassword))) {
+		return next(new CustomError('Password is incorrect!', 401));
+	}
+
+	// Set the new password
+	user.password = req.body.newPassword;
+	await user.save();
+
+	// Send back token
+	// after change password logout all??
+	tokenResponse(user, 200, res);
 });
 
 // Get Token from model, create cookie and send response
