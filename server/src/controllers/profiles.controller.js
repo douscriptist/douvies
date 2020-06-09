@@ -5,13 +5,6 @@ const mongoose = require('mongoose');
 const UserSetting = require('../models/Profile');
 const User = require('../models/User');
 
-// @route   GET douvies/profile
-// @desc    Get all Users
-// @access  Public?
-exports.getAllProfiles = asyncHandler(async (req, res) => {
-	res.status(200).json({ success: true, page: 'Profile & Settings' });
-});
-
 // @route   GET douvies/profile/:uid
 // @desc    Get a profile by user id
 // @access  Private
