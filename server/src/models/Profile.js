@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const ProfileSchema = new mongoose.Schema({
 	avatar: String,
 	isActive: { type: Boolean, default: true },
+	isPending: { type: Boolean, default: false },
 	darkMode: { type: Boolean, default: false },
 	hideFavourites: { type: Boolean, default: false },
 	hideProfile: { type: Boolean, default: false },
@@ -14,6 +15,7 @@ const ProfileSchema = new mongoose.Schema({
 	// 	type: [mongoose.Schema.Types.ObjectId],
 	// 	ref: 'serie',
 	// },
+	// social: { LATER: to integrate & login register etc },
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },
 	user: {
@@ -27,7 +29,7 @@ const ProfileSchema = new mongoose.Schema({
 ProfileSchema.virtual('movies', {
 	ref: 'Movie',
 	localField: '_id',
-	foreignField: 'user.profile',
+	foreignField: 'user',
 	justOne: false,
 });
 

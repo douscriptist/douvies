@@ -45,3 +45,8 @@ exports.orderTypeOptions = [
 ];
 
 exports.privacyOptions = ['public', 'private', 'unlisted'];
+
+exports.roles = {
+	ADMIN_ROLE: 'admin',
+	USER_ROLE: 'user',
+};

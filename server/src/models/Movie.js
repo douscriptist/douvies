@@ -72,7 +72,6 @@ const MovieSchema = new mongoose.Schema(
 		},
 		isWatched: {
 			type: Boolean,
-			required: true,
 			default: true,
 		},
 		lists: {
@@ -85,11 +84,6 @@ const MovieSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 			required: true,
-			profile: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Profile',
-				required: true,
-			},
 		},
 	},
 	{
