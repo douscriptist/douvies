@@ -31,6 +31,14 @@ const UserSchema = new mongoose.Schema({
 	},
 	resetPasswordToken: String,
 	resetPasswordExpire: Date,
+	role: {
+		type: String,
+		enum: ['user', 'admin'],
+		default: 'user',
+	},
+	profile: {
+		type: mongoose.Schema.Types.ObjectId,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,
@@ -72,6 +80,16 @@ UserSchema.pre('save', async function (next) {
 	next();
 });
 
+// LATER: Does not work
+// FIX:
+// Cascade delete profile when a user was deleted
+// Then others lists, movies, series etc...
+UserSchema.pre('remove', async function (next) {
+	console.log(`Profile is being removed from User: ${this._id}`);
+	await this.model('Profile').deleteOne({ user: this._id });
+	next();
+});
+
 // Sign JWT and Return Token
 UserSchema.methods.getSignedJWTToken = function () {
 	// const payload = {
@@ -104,6 +122,12 @@ UserSchema.methods.getResetPasswordToken = function () {
 	this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // Set Expire Time for Token
 
 	return resetToken;
+};
+
+// Get & Set Profile id to related(this) user on create
+UserSchema.methods.setProfile = function (profileId) {
+	this.profile = profileId;
+	this.save();
 };
 
 module.exports = User = mongoose.model('user', UserSchema);
