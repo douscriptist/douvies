@@ -60,6 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/douvies/auth', require('./routes/auth'));
+app.use('/douvies/admin', require('./routes/admin'));
 app.use('/douvies/users', require('./routes/users'));
 app.use('/douvies/movies', require('./routes/movies'));
 app.use('/douvies/series', require('./routes/series'));
