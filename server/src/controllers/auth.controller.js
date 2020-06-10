@@ -9,6 +9,22 @@ const Profile = require('../models/Profile');
 //LATER: delete pending approval from admin etc.
 //LATER: temporarly disable
 
+// @desc      Get current logged in user
+// @route     GET /api/v1/users/me
+// @access    Private
+exports.getLoggedIn = asyncHandler(async (req, res, next) => {
+	try {
+		const user = await User.findById(req.user.id);
+		res.status(200).json({
+			success: true,
+			data: user,
+		});
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
+
 // @desc      Register user -> Get Token
 // @route     POST /api/v1/auth/register
 // @access    Public
@@ -34,8 +50,9 @@ exports.register = asyncHandler(async (req, res, next) => {
 	// Create default profile
 	const profile = await Profile.create({ user: user._id });
 
+	// INFO: dont need because populate virtual
 	// Send created profile's id to user
-	await user.setProfile(profile._id);
+	// await user.setProfile(profile._id);
 
 	tokenResponse(user, 200, res);
 });
@@ -86,53 +103,6 @@ exports.logout = asyncHandler(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 		data: {},
-	});
-});
-
-// @desc      Get current logged in user
-// @route     GET /api/v1/auth/me
-// @access    Private
-exports.getMe = asyncHandler(async (req, res, next) => {
-	try {
-		const user = await User.findById(req.user.id);
-		res.status(200).json({
-			success: true,
-			data: user,
-		});
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send('Server Error');
-	}
-});
-
-// @desc      Update user details (self not admin privilages)
-// @route     PUT /api/v1/auth/me/update/info
-// @access    Private
-exports.updateMe = asyncHandler(async (req, res, next) => {
-	const updateFields = {};
-	if (req.body.name) {
-		updateFields.name = req.body.name;
-	}
-	if (req.body.username) {
-		updateFields.username = req.body.username;
-	}
-	if (req.body.email) {
-		updateFields.email = req.body.email;
-	}
-
-	// Check and do sth
-	if (!Object.keys(updateFields).length > 0) {
-		return next(new CustomError('There is no any credentials', 401));
-	}
-
-	const user = await User.findByIdAndUpdate(req.user.id, updateFields, {
-		new: true,
-		runValidators: true,
-	});
-
-	res.status(200).json({
-		success: true,
-		data: user,
 	});
 });
 
