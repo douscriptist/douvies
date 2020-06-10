@@ -3,51 +3,58 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const UserSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: [true, 'Name is required.'],
+const UserSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: [true, 'Name is required.'],
+		},
+		username: {
+			type: String,
+			required: [true, 'Username is required.'],
+			minlength: [3, 'Username should be at least 3 characters!'],
+			unique: true,
+		},
+		email: {
+			type: String,
+			required: [true, 'Email is required.'],
+			unique: true,
+			match: [
+				/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+				'Please add a valid email.',
+			],
+		},
+		password: {
+			type: String,
+			required: [true, 'Password is required.'],
+			minlength: 6,
+			select: false,
+		},
+		resetPasswordToken: String,
+		resetPasswordExpire: Date,
+		role: {
+			type: String,
+			enum: ['user', 'admin'],
+			default: 'user',
+		},
+		profile: {
+			type: mongoose.Schema.Types.ObjectId,
+		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
+		updatedAt: {
+			type: Date,
+			default: Date.now,
+		},
 	},
-	username: {
-		type: String,
-		required: [true, 'Username is required.'],
-		minlength: [3, 'Username should be at least 3 characters!'],
-		unique: true,
-	},
-	email: {
-		type: String,
-		required: [true, 'Email is required.'],
-		unique: true,
-		match: [
-			/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-			'Please add a valid email.',
-		],
-	},
-	password: {
-		type: String,
-		required: [true, 'Password is required.'],
-		minlength: 6,
-		select: false,
-	},
-	resetPasswordToken: String,
-	resetPasswordExpire: Date,
-	role: {
-		type: String,
-		enum: ['user', 'admin'],
-		default: 'user',
-	},
-	profile: {
-		type: mongoose.Schema.Types.ObjectId,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-	updatedAt: {
-		type: Date,
-		default: Date.now,
-	},
-});
+	{
+		// id: false,
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
 
 // Reverse populate with virtuals
 UserSchema.virtual('settings', {
