@@ -16,9 +16,6 @@ const router = express.Router();
 // router.put('/:uid', protect, updateProfileByUID);
 // router.delete('/:pid', protect, resetProfile);
 
-// // TODO: asyncHandler next param
-// // TODO: /user re-route
-// // TODO: refactor all
 // router.get('/user/:pid', protect, getProfileByPID);
 // router.put('/user/:pid', protect, updateProfileByPID);
 
