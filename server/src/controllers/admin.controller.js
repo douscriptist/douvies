@@ -29,7 +29,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/admin/users
 // @access    Private/Admin
 exports.getAllUsers = asyncHandler(async (req, res, next) => {
-	const users = await User.find();
+	const users = await User.find().populate('settings');
 	res.status(200).json({
 		success: true,
 		data: users,

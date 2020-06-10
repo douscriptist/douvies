@@ -64,6 +64,6 @@ app.use('/douvies/admin', require('./routes/admin'));
 app.use('/douvies/users', require('./routes/users'));
 app.use('/douvies/movies', require('./routes/movies'));
 app.use('/douvies/series', require('./routes/series'));
-app.use('/douvies/profile', require('./routes/profiles'));
+// app.use('/douvies/lists', require('./routes/lists'));
 
 module.exports = app;
