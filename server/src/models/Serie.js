@@ -82,7 +82,7 @@ const SerieSchema = new mongoose.Schema(
 		},
 		isFinalled: {
 			type: Boolean,
-			required: [true, 'Did serie ended/finalled?'],
+			required: [true, 'Did serie ended or finalled?'],
 		},
 		lists: {
 			type: [mongoose.Schema.Types.ObjectId],

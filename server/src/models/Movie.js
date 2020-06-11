@@ -21,6 +21,7 @@ const MovieSchema = new mongoose.Schema(
 		apiId: {
 			type: String,
 			required: [true, 'Api ID is required.'],
+			unique: true,
 		},
 		imdbId: {
 			type: String,
