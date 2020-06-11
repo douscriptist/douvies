@@ -11,16 +11,12 @@ const User = require('../models/User');
 // @route     GET /api/v1/users/me
 // @access    Private
 exports.getMe = asyncHandler(async (req, res, next) => {
-	try {
-		const user = await User.findById(req.user.id).populate('settings');
-		res.status(200).json({
-			success: true,
-			data: user,
-		});
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send('Server Error');
-	}
+	const user = await User.findById(req.user.id).populate('settings');
+
+	res.status(200).json({
+		success: true,
+		data: user,
+	});
 });
 
 // @desc      Update logged in user (self)

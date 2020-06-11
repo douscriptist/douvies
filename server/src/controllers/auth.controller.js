@@ -13,16 +13,12 @@ const Profile = require('../models/Profile');
 // @route     GET /api/v1/users/me
 // @access    Private
 exports.getLoggedIn = asyncHandler(async (req, res, next) => {
-	try {
-		const user = await User.findById(req.user.id);
-		res.status(200).json({
-			success: true,
-			data: user,
-		});
-	} catch (err) {
-		console.error(err.message);
-		res.status(500).send('Server Error');
-	}
+	const user = await User.findById(req.user.id);
+
+	res.status(200).json({
+		success: true,
+		data: user,
+	});
 });
 
 // @desc      Register user -> Get Token
