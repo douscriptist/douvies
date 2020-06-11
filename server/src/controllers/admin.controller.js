@@ -115,15 +115,17 @@ exports.updateUserByPID = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/admin/users/:id
 // @access    Private/Admin
 exports.deleteUserByUID = asyncHandler(async (req, res, next) => {
-	const user = await User.findByIdAndDelete(req.params.id);
+	const user = await User.findById(req.params.id);
+
+	if (!user) {
+		return next(new CustomError(`User not found ${req.params.id}`, 404));
+	}
 
 	// Delete also users profile
 	// Here or hooks with mongoose
 	// Preferred mongoose hooks in User model
 
-	if (!user) {
-		return next(new CustomError(`User not found ${req.params.id}`, 404));
-	}
+	await user.remove();
 
 	res.status(200).json({
 		success: true,

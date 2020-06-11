@@ -1,10 +1,9 @@
 const express = require('express');
 const {
-	check,
-	getFavourites,
+	addSerie,
+	getUpcomingSeries,
+	getAllSeries,
 	getSerie,
-	getSeries,
-	createSerie,
 	updateSerie,
 	deleteSerie,
 } = require('../controllers/series.controller');
@@ -13,11 +12,16 @@ const { protect, authorize } = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.get('/', protect, getSeries);
-router.post('/', protect, check, createSerie);
-router.get('/:sid', protect, getSerie);
-router.put('/:sid', protect, updateSerie);
-router.delete('/:sid', protect, deleteSerie);
-router.get('/favourites', protect, getFavourites);
+// router.get('/favourites', protect, getFavourites);
+
+router.get('/soon', getUpcomingSeries);
+router.get('/:id', protect, getSerie);
+router.get('/', protect, getAllSeries);
+
+router.post('/', protect, addSerie);
+
+router.put('/:id', protect, updateSerie);
+
+router.delete('/:id', protect, deleteSerie);
 
 module.exports = router;

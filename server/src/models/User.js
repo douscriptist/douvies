@@ -87,13 +87,10 @@ UserSchema.pre('save', async function (next) {
 	next();
 });
 
-// LATER: Does not work
-// FIX:
 // Cascade delete profile when a user was deleted
-// Then others lists, movies, series etc...
+// TODO: // Then others lists, movies, series etc...
 UserSchema.pre('remove', async function (next) {
-	console.log(`Profile is being removed from User: ${this._id}`);
-	await this.model('Profile').deleteOne({ user: this._id });
+	await this.model('Profile').deleteMany({ user: this._id });
 	next();
 });
 
