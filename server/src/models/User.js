@@ -88,7 +88,7 @@ UserSchema.pre('save', async function (next) {
 });
 
 // Cascade delete profile when a user was deleted
-// TODO: // Then others lists, movies, series etc...
+// Then others lists, movies, series etc...
 UserSchema.pre('remove', async function (next) {
 	await this.model('Profile').deleteMany({ user: this._id });
 	next();

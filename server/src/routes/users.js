@@ -21,8 +21,4 @@ router.get('/me/profile/reset', protect, resetProfile);
 router.put('/me/info', protect, updateMe);
 router.put('/me/profile', protect, updateMyProfile);
 
-// // TODO: asyncHandler next param
-// // TODO: /user re-route
-// // TODO: refactor all
-
 module.exports = router;

@@ -48,22 +48,20 @@ const ListSchema = new mongoose.Schema(
 	}
 );
 
-// LATER:
-// Reverse populate with virtuals
-ListSchema.virtual('movies', {
-	ref: 'Movie',
-	localField: '_id',
-	foreignField: 'lists',
-	justOne: false,
-});
+// // Reverse populate with virtuals
+// ListSchema.virtual('movies', {
+// 	ref: 'Movie',
+// 	localField: '_id',
+// 	foreignField: 'lists',
+// 	justOne: false,
+// });
 
-// LATER:
-// Reverse populate with virtuals
-ListSchema.virtual('series', {
-	ref: 'Serie',
-	localField: '_id',
-	foreignField: 'lists',
-	justOne: false,
-});
+// // Reverse populate with virtuals
+// ListSchema.virtual('series', {
+// 	ref: 'Serie',
+// 	localField: '_id',
+// 	foreignField: 'lists',
+// 	justOne: false,
+// });
 
 module.exports = mongoose.model('List', ListSchema);

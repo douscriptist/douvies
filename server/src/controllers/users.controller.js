@@ -80,7 +80,7 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
 	const user = await User.findById(req.params.id).populate({
-		path: 'lists', // TODO: fav list
+		path: 'lists',
 		select: 'favourites',
 	});
 
@@ -98,9 +98,6 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/users/me/profile/reset
 // @access    Private
 exports.resetProfile = asyncHandler(async (req, res, next) => {
-	// TODO: Reset profile
-	// TODO: Clear lists, movies, series
-	// TODO: default settings
 	res.status(200).json({
 		success: true,
 		msg: 'Profile delete, reset to default settings',

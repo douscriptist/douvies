@@ -274,9 +274,3 @@ exports.deleteProfileByUID = asyncHandler(async (req, res, next) => {
 		data: {},
 	});
 });
-
-// LATER: getAll - Movies & Series & Lists
-// LATER: getUsersMovies&Series
-
-// LATER: Delete All Users
-// LATER: Delete All Profiles
