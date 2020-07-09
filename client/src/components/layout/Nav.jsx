@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Nav() {
+function Nav({ changeTheme }) {
 	return (
 		<div>
 			<ul>
@@ -12,6 +12,8 @@ function Nav() {
 					<Link to='/register'>Register</Link>
 				</li>
 			</ul>
+
+			<button onClick={changeTheme}> Change Theme </button>
 		</div>
 	);
 }
