@@ -11,17 +11,20 @@ import ThemeContext, { themes } from './theme/theme-context';
 const App = () => {
 	const [theme, setTheme] = useState(themes.dark);
 
-	const handleTheme = () =>
+	const toggleTheme = () => {
 		theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
+	};
+
 	return (
-		<ThemeContext.Provider value={themes.light}>
+		<ThemeContext.Provider value={theme}>
 			<Router>
-				<Route exact path='/' component={Landing} toggleTheme={handleTheme} />
+				<Route exact path='/' component={Landing} />
 				<Switch>
 					<Route exact path='/login' component={Login} />
 					<Route exact path='/register' component={Register} />
 				</Switch>
 			</Router>
+			<button onClick={toggleTheme}> Change Theme </button>
 		</ThemeContext.Provider>
 	);
 };
