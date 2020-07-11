@@ -1,24 +1,22 @@
-// /redux/reducers/config.js
-import { THEME_SET } from '../actions/config';
+import { SET_THEME, LOAD_THEME } from '../actions/types';
 
-export const SET_THEME_DARK = 'SET_THEME_DARK';
-export const SET_THEME_LIGHT = 'SET_THEME_LIGHT';
-
-const defaultState = {
-	theme: 'default',
+const initialState = {
+	theme: localStorage.getItem('theme') || 'light',
 };
 
-// const initialState = [];
-
-export default (state = defaultState, action) => {
+export default (state = initialState, action) => {
 	const { type, payload } = action;
 
 	switch (type) {
-		case SET_THEME_DARK:
+		case SET_THEME:
+			localStorage.setItem('theme', payload);
 			return { ...state, theme: payload };
 
-		case SET_THEME_LIGHT:
-			return { ...state, theme: payload };
+		case LOAD_THEME:
+			return {
+				...state,
+				theme: localStorage.getItem('theme') || 'light',
+			};
 
 		default:
 			return state;

@@ -1,14 +1,32 @@
-// /redux/actions/config.js
-export const THEME_SET = 'THEME_SET';
+import { SET_THEME, LOAD_THEME } from './types';
 
-export const SET_THEME_DARK = 'SET_THEME_DARK';
-export const SET_THEME_LIGHT = 'SET_THEME_LIGHT';
+// Set Theme ~~~~~~
+export const setTheme = () => (dispatch) => {
+	const theme = localStorage.getItem('theme');
 
-const initialState = [];
+	let payload = 'light';
+	if (theme) {
+		console.log('storagede var');
+		payload = theme === 'dark' ? 'light' : 'dark';
+	}
 
-export const setTheme = (theme) => (dispatch) => {
 	dispatch({
-		type: SET_THEME_LIGHT,
-		payload: { theme },
+		type: SET_THEME,
+		payload,
 	});
+};
+
+// Load Theme
+export const loadTheme = () => (dispatch) => {
+	if (localStorage.theme) {
+		dispatch({
+			type: LOAD_THEME,
+			payload: localStorage.theme,
+		});
+	} else {
+		dispatch({
+			type: SET_THEME,
+			payload: 'light',
+		});
+	}
 };
