@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 
@@ -6,17 +6,26 @@ import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 
-import ThemeContext, { themes } from './theme/theme-context';
+//Redux
+import { Provider } from 'react-redux';
+import store from './store';
+import { loadTheme, setTheme as sT } from './redux/actions/theme';
+// import { loadUser } from './actions/auth';
+// import setAuthToken from './utils/setAuthToken';
 
 const App = () => {
-	const [theme, setTheme] = useState(themes.dark);
+	useEffect(() => {
+		store.dispatch(loadTheme());
+		// store.dispatch(loadUser());
+	}, []);
 
-	const toggleTheme = () => {
-		theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
+	const setThemeLight = () => {
+		store.dispatch(sT());
+		// setTheme(localStorage.getItem('theme'));
 	};
 
 	return (
-		<ThemeContext.Provider value={theme}>
+		<Provider store={store}>
 			<Router>
 				<Route exact path='/' component={Landing} />
 				<Switch>
@@ -24,8 +33,8 @@ const App = () => {
 					<Route exact path='/register' component={Register} />
 				</Switch>
 			</Router>
-			<button onClick={toggleTheme}> Change Theme </button>
-		</ThemeContext.Provider>
+			<button onClick={setThemeLight}> Change Theme </button>
+		</Provider>
 	);
 };
 
