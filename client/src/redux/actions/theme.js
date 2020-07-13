@@ -1,4 +1,4 @@
-import { SET_THEME, LOAD_THEME } from './types';
+import { SET_THEME, LOAD_THEME } from '../types';
 
 // Set Theme ~~~~~~
 export const setTheme = () => (dispatch) => {
@@ -6,7 +6,6 @@ export const setTheme = () => (dispatch) => {
 
 	let payload = 'light';
 	if (theme) {
-		console.log('storagede var');
 		payload = theme === 'dark' ? 'light' : 'dark';
 	}
 

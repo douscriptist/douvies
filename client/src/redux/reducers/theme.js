@@ -1,4 +1,4 @@
-import { SET_THEME, LOAD_THEME } from '../actions/types';
+import { SET_THEME, LOAD_THEME } from '../types';
 
 const initialState = {
 	theme: localStorage.getItem('theme') || 'light',
