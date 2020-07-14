@@ -11,6 +11,9 @@ function Nav() {
 				<li>
 					<Link to='/register'>Register</Link>
 				</li>
+				<li>
+					<Link to='/alert'>Alert Try</Link>
+				</li>
 			</ul>
 		</div>
 	);

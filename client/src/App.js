@@ -9,7 +9,8 @@ import Register from './components/auth/Register';
 //Redux
 import { Provider } from 'react-redux';
 import store from './store';
-import { loadTheme, setTheme as sT } from './redux/actions/theme';
+import { loadTheme, setTheme } from './redux/actions/theme';
+import AlertTry from './components/AlertTry';
 // import { loadUser } from './actions/auth';
 // import setAuthToken from './utils/setAuthToken';
 
@@ -20,8 +21,7 @@ const App = () => {
 	}, []);
 
 	const setThemeLight = () => {
-		store.dispatch(sT());
-		// setTheme(localStorage.getItem('theme'));
+		store.dispatch(setTheme());
 	};
 
 	return (
@@ -31,6 +31,7 @@ const App = () => {
 				<Switch>
 					<Route exact path='/login' component={Login} />
 					<Route exact path='/register' component={Register} />
+					<Route exact path='/alert' component={AlertTry} />
 				</Switch>
 			</Router>
 			<button onClick={setThemeLight}> Change Theme </button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,9 @@ import { dark, light } from '../../theme/theme-context';
 const Landing = ({ theme: { theme } }) => {
 	const [mode, setMode] = useState(light);
 
-	useEffect(() => {
+	// Alternative to useEffect for theme
+	// paints the app before it renders elements
+	useLayoutEffect(() => {
 		if (theme === 'dark') {
 			setMode(light);
 		} else {
