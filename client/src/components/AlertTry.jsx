@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { v4 as uuid } from 'uuid';
+
 import { setAlert } from '../redux/actions/alert';
 
 const AlertTry = ({ setAlert, alerts }) => {
@@ -10,7 +12,7 @@ const AlertTry = ({ setAlert, alerts }) => {
 			<ul>
 				{alerts.map((alert) => (
 					<li>
-						id: {alert.id++}, msg: {alert.message}, type: {alert.alertType}
+						id: {uuid()}, msg: {alert.message}, type: {alert.alertType}
 					</li>
 				))}
 			</ul>
