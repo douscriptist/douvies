@@ -9,7 +9,6 @@ import Routes from './components/routes/Routes';
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadTheme, setTheme } from './redux/actions/theme';
-import AlertTry from './components/AlertTry';
 // import { loadUser } from './actions/auth';
 // import setAuthToken from './utils/setAuthToken';
 
