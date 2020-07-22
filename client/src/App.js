@@ -9,13 +9,13 @@ import Routes from './components/routes/Routes';
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadTheme, setTheme } from './redux/actions/theme';
-// import { loadUser } from './actions/auth';
+import { loadUser } from './redux/actions/auth';
 // import setAuthToken from './utils/setAuthToken';
 
 const App = () => {
 	useEffect(() => {
 		store.dispatch(loadTheme());
-		// store.dispatch(loadUser());
+		store.dispatch(loadUser());
 	}, []);
 
 	const setThemeLight = () => {
