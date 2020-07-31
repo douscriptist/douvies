@@ -14,7 +14,7 @@ const Routes = () => {
 			<Switch>
 				<Route exact path='/login' component={Login} />
 				<Route exact path='/register' component={Register} />
-				<Route exact path='/alert' component={AlertTry} />
+				{/* <Route exact path='/alert' component={AlertTry} /> */}
 				{/* LATER:WILL BE REMOVED & REFACTORED  */}
 				{/* <Route exact path='/profiles' component={Profiles} />
 				<Route exact path='/profile/user/:userId' component={Profile} />
