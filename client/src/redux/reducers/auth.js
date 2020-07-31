@@ -12,9 +12,10 @@ export default function (state = initialState, action) {
 
 	switch (type) {
 		case LOAD_USER:
+			// If user exists
 			return {
 				...state,
-				isAuthenticated: true,
+				isAuthenticated: false,
 				loading: false,
 				user: payload, // User data type...
 			};

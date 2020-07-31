@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated }) => {
 	// const Navbar = ({ logout, auth: { isAuthenticated, loading } }) => {
 	const authLinks = (
 		<ul>
@@ -49,7 +49,7 @@ const Navbar = () => {
 				<Link to='/upcoming'> Upcoming </Link>
 			</li>
 			<li>
-				<Link to='/register'> Sign Up </Link>
+				<Link to='/register'> Register </Link>
 			</li>
 			<li>
 				<Link to='/login'> Login </Link>
@@ -61,16 +61,23 @@ const Navbar = () => {
 		<nav className='navbar bg-dark'>
 			<h1>
 				<Link to='/'>
-					{' '}
 					<i className='fas fa-compact-disc'></i> Douvies{' '}
 				</Link>
 			</h1>
 			{!false && (
-				<Fragment>{false ? authLinks : guestLinks}</Fragment>
+				<Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
 				// <Fragment>{isAuthenticated && false ? authLinks : guestLinks}</Fragment>
 			)}
 		</nav>
 	);
 };
 
-export default Navbar;
+Navbar.propTypes = {
+	isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, {})(Navbar);

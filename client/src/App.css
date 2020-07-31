@@ -11,11 +11,13 @@ font-family: 'Shadows Into Light', cursive; */
   --font-montserrat: 'Nunito', 'Montserrat', sans-serif;
   --font-nunito: 'Montserrat', 'Nunito', sans-serif;
   --primary-color: rgb(179, 17, 17);
+  --primary-color-light: rgba(179, 17, 17, .125);
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
   --comment-color: #e6d5a7;
+  --gray-color: #efefef;
 }
 
 * {
@@ -66,12 +68,52 @@ img {
 
 .container {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  /* height: 100%; */
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  /* margin-top: 3rem;
+  margin-bottom: 3rem; */
+}
+
+.login,
+.register {
+  display: flex;
+  flex-direction: column;
+  /* height: 100vh; */
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  background-color: #e5e2e2;
+}
+
+.form-group :-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  background-color: #e5e2e2;
+}
+
+.form-group ::placeholder {
+  background-color: #e5e2e2;
+}
+
+.login .form-group,
+.register .form-group {
+  width: 400px;
+}
+
+.form-login,
+.form-register {
+  border: 5px solid var(--gray-color);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--primary-color-light);
+
 }
 
 /* Text Styles*/
@@ -88,8 +130,7 @@ img {
 }
 
 .lead {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
 }
 
 .text-center {
@@ -180,6 +221,7 @@ img {
 
 .btn {
   display: inline-block;
+  width: 100%;
   background: var(--light-color);
   color: #333;
   padding: 0.4rem 1.3rem;
@@ -189,7 +231,7 @@ img {
   margin-right: 0.5rem;
   transition: opacity 0.2s ease-in;
   outline: none;
-  border-radius: 25px;
+  border-radius: 3px;
 }
 
 .badge {
@@ -322,7 +364,9 @@ img {
 
 .form .form-text {
   display: block;
+  text-align: left;
   margin-top: 0.3rem;
+  margin-left: 0.2rem;
   color: #888;
   font-family: var(--font-nunito) !important;
 }
@@ -340,6 +384,7 @@ img {
   font-size: 1.2rem;
   border: 1px solid #ccc;
   resize: none;
+  background-color: #e5e2e2;
 }
 
 .form input[type='submit'],
