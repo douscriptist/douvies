@@ -35,38 +35,40 @@ const Login = ({ login, isAuthenticated }) => {
 	}
 
 	return (
-		<div className='container'>
-			<h1 className='large text-primary'>Sign In</h1>
-			<p className='lead'>
-				<i className='fas fa-user'></i> Sign Into Your Account
-			</p>
-			<form className='form' onSubmit={handleSubmit}>
-				<div className='form-group'>
-					<input
-						type='email'
-						placeholder='Email Address'
-						name='email'
-						required
-						value={email}
-						onChange={(e) => handleChange(e)}
-					/>
-				</div>
-				<div className='form-group'>
-					<input
-						type='password'
-						placeholder='Password'
-						name='password'
-						minLength='6'
-						value={password}
-						onChange={(e) => handleChange(e)}
-					/>
-				</div>
-				<input type='submit' className='btn btn-primary' value='Login' />
-			</form>
-			<p className='my-1'>
-				Don't have an account?
-				<Link to='/register'> Sign Up</Link>
-			</p>
+		<div className='container login'>
+			<div className='form-login'>
+				<h1 className='large text-primary'>Login</h1>
+				<p className='lead'>
+					<i className='fas fa-user'></i> Sign Into Your Account
+				</p>
+				<form className='form' onSubmit={handleSubmit}>
+					<div className='form-group'>
+						<input
+							type='email'
+							placeholder='Email Address'
+							name='email'
+							required
+							value={email}
+							onChange={(e) => handleChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<input
+							type='password'
+							placeholder='Password'
+							name='password'
+							minLength='6'
+							value={password}
+							onChange={(e) => handleChange(e)}
+						/>
+					</div>
+					<input type='submit' className='btn btn-primary' value='Login' />
+				</form>
+				<p className='my-1'>
+					Don't have an account?
+					<Link to='/register'> Sign Up</Link>
+				</p>
+			</div>
 		</div>
 	);
 };

@@ -45,62 +45,63 @@ export const Register = () => {
 	// }
 
 	return (
-		<div className='container'>
-			<h1 className='large text-primary'>Sign Up</h1>
-			<p className='lead'>
-				<i className='fas fa-user'></i> Create Your Account
-			</p>
-			<form className='form' onSubmit={handleSubmit}>
-				<div className='form-group'>
-					<input
-						type='text'
-						placeholder='Name'
-						name='name'
-						// required
-						value={name}
-						onChange={(e) => handleChange(e)}
-					/>
-				</div>
-				<div className='form-group'>
-					<input
-						type='email'
-						placeholder='Email Address'
-						name='email'
-						// required
-						value={email}
-						onChange={(e) => handleChange(e)}
-					/>
-					<small className='form-text'>
-						This site uses Gravatar so if you want a profile image, use a
-						Gravatar email
-					</small>
-				</div>
-				<div className='form-group'>
-					<input
-						type='password'
-						placeholder='Password'
-						name='password'
-						// minLength="6"
-						value={password}
-						onChange={(e) => handleChange(e)}
-					/>
-				</div>
-				<div className='form-group'>
-					<input
-						type='password'
-						placeholder='Confirm Password'
-						name='passwordRe'
-						// minLength="6"
-						value={passwordRe}
-						onChange={(e) => handleChange(e)}
-					/>
-				</div>
-				<input type='submit' className='btn btn-primary' value='Register' />
-			</form>
-			<p className='my-1'>
-				Already have an account?
-				<Link to='/login'> Sign In</Link>
-			</p>
+		<div className='container register'>
+			<div className='form-register'>
+				<h1 className='large text-primary'>Register</h1>
+				<p className='lead'>
+					<i className='fas fa-user'></i> Create Your Account
+				</p>
+				<form className='form' onSubmit={handleSubmit}>
+					<div className='form-group'>
+						<input
+							type='text'
+							placeholder='Name'
+							name='name'
+							// required
+							value={name}
+							onChange={(e) => handleChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<input
+							type='email'
+							placeholder='Email Address'
+							name='email'
+							// required
+							value={email}
+							onChange={(e) => handleChange(e)}
+						/>
+						<small className='form-text'>
+							*This site uses Gravatar so you can use Gravatar Email.
+						</small>
+					</div>
+					<div className='form-group'>
+						<input
+							type='password'
+							placeholder='Password'
+							name='password'
+							// minLength="6"
+							value={password}
+							onChange={(e) => handleChange(e)}
+						/>
+					</div>
+					<div className='form-group'>
+						<input
+							type='password'
+							placeholder='Confirm Password'
+							name='passwordRe'
+							// minLength="6"
+							value={passwordRe}
+							onChange={(e) => handleChange(e)}
+						/>
+					</div>
+					<input type='submit' className='btn btn-primary' value='Register' />
+				</form>
+				<p className='my-1'>
+					Already have an account?
+					<Link to='/login'> Sign In</Link>
+				</p>
+			</div>
 		</div>
 	);
 };
