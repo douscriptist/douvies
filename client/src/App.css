@@ -113,7 +113,25 @@ img {
   padding: 20px;
   border-radius: 10px;
   background-color: var(--primary-color-light);
+}
 
+.navbar-settings {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+}
+
+.navbar-settings i {
+  margin: 0 0 0 20px;
+}
+
+.navbar-settings i:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.buttons {
+  margin-top: 2rem;
 }
 
 /* Text Styles*/
@@ -485,7 +503,7 @@ button {
 }
 
 .landing-inner h1 {
-  font-family: ;
+  color: lightgray;
 }
 
 .landing-inner h1 span {
