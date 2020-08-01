@@ -64,10 +64,14 @@ const Navbar = ({ isAuthenticated }) => {
 					<i className='fas fa-compact-disc'></i> Douvies{' '}
 				</Link>
 			</h1>
-			{!false && (
-				<Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-				// <Fragment>{isAuthenticated && false ? authLinks : guestLinks}</Fragment>
-			)}
+			<div className='navbar-settings'>
+				{!false && (
+					<Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+					// <Fragment>{isAuthenticated && false ? authLinks : guestLinks}</Fragment>
+				)}
+				{/* LATER: navbar status */}
+				<i className='fas fa-tools'></i>
+			</div>
 		</nav>
 	);
 };
